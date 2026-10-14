@@ -292,10 +292,12 @@
 
             <!-- Total Stars & Sound Controls -->
             <div class="flex items-center gap-2 sm:gap-3 ml-auto">
-                <div class="hidden md:flex items-center gap-1.5 bg-emerald-50 border-2 border-emerald-300 text-emerald-800 px-3 py-1 rounded-2xl text-xs font-bold" id="voiceStatusPill" title="Suara Manusia AI Aktif">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span id="voiceStatusText">Suara AI Natural</span>
-                </div>
+                <button onclick="openVoiceModal()" class="btn-3d flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-400 text-emerald-900 px-2.5 sm:px-3 py-1.5 rounded-2xl text-xs font-bold cursor-pointer" id="voiceStatusPill" title="Klik untuk Tetapan Suara Manusia AI di Vercel">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" id="voiceStatusDot"></span>
+                    <i class="fa-solid fa-wand-magic-sparkles text-emerald-600"></i>
+                    <span id="voiceStatusText" class="hidden sm:inline">Suara Manusia Aktif</span>
+                    <i class="fa-solid fa-gear text-emerald-700 text-[11px] ml-0.5"></i>
+                </button>
                 <div class="bg-amber-100 border-2 border-amber-400 rounded-2xl px-3 py-1.5 flex items-center gap-2 shadow-inner" title="Jumlah Bintang Terkumpul">
                     <i class="fa-solid fa-star text-amber-400 text-lg sm:text-xl drop-shadow"></i>
                     <span id="totalStarsBadge" class="font-kid font-bold text-base sm:text-lg text-amber-900">0 / 15</span>
@@ -657,6 +659,54 @@
             🌟 Bahasa Melayu Tahun 2 • Tema 4: Keselamatan (Murid Beradab, Kantin Selamat) 🌟
         </div>
     </footer>
+
+    <div id="voiceSettingsModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white border-4 border-amber-400 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 animate-fadeIn">
+            <div class="flex items-center justify-between border-b-2 border-slate-100 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl">🎙️</span>
+                    <div>
+                        <h3 class="font-kid font-bold text-lg text-slate-800">Tetapan Suara Manusia (Vercel)</h3>
+                        <p class="text-xs text-slate-500 font-semibold">Elakkan suara robotik pada semua peranti</p>
+                    </div>
+                </div>
+                <button onclick="closeVoiceModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-600 flex items-center justify-center font-bold">✕</button>
+            </div>
+
+            <div class="space-y-3 text-xs sm:text-sm text-slate-700">
+                <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-3">
+                    <div class="font-kid font-bold text-emerald-900 mb-1">✅ Enjin Suara Cloud Melayu (Aktif Secara Automatik)</div>
+                    <p class="text-xs text-emerald-800 leading-relaxed">
+                        Aplikasi ini kini dilengkapi <strong>Penstriman Audio Cloud Bahasa Melayu</strong> secara automatik supaya suara tidak berbunyi robotik walaupun tanpa kunci API.
+                    </p>
+                </div>
+
+                <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 space-y-2">
+                    <label class="font-kid font-bold text-amber-950 block">
+                        🔑 Kunci API Gemini (Pilihan - Untuk Suara AI Guru Paling Realistik):
+                    </label>
+                    <input type="password" id="customApiKeyInput" placeholder="Tampal Gemini API Key (AIzaSy...)" class="w-full px-3 py-2 rounded-xl border-2 border-amber-300 text-sm font-mono focus:outline-none focus:border-amber-500 bg-white">
+                    <p class="text-[11px] text-amber-800 leading-normal">
+                        Dapatkan kunci percuma di <strong>aistudio.google.com</strong>. Jika diisi, aplikasi di Vercel akan menggunakan suara AI Gemini 2.5 (Aoede).
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 pt-2">
+                <button onclick="testVoiceNow()" class="btn-3d bg-sky-500 hover:bg-sky-400 text-white font-kid font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-volume-high"></i> Uji Suara
+                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="closeVoiceModal()" class="btn-3d bg-slate-200 hover:bg-slate-300 text-slate-700 font-kid font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm">
+                        Tutup
+                    </button>
+                    <button onclick="saveVoiceSettings()" class="btn-3d bg-emerald-500 hover:bg-emerald-400 text-white font-kid font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm">
+                        Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Celebration Confetti Canvas -->
     <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
@@ -1491,24 +1541,75 @@
             document.getElementById('totalStarsBadge').textContent = `${total} / 15`;
         }
 
-        // Realistic Human Voice Engine (Gemini TTS + High-Quality Natural Malay Voice Fallback)
+        // CIKGU BOLEH LETAK GEMINI API KEY DI SINI JIKA MAHU TERUS AKTIF UNTUK SEMUA MURID DI VERCEL:
+        const VERCEL_GEMINI_API_KEY = ""; 
+        let runtimeGeminiApiKey = VERCEL_GEMINI_API_KEY;
+
         const ttsAudioCache = new Map();
         let activeAudioElement = null;
         let wordHighlightTimers = [];
         let preferredMalayVoice = null;
+
+        function openVoiceModal() {
+            const modal = document.getElementById('voiceSettingsModal');
+            const input = document.getElementById('customApiKeyInput');
+            if (input) input.value = runtimeGeminiApiKey;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeVoiceModal() {
+            const modal = document.getElementById('voiceSettingsModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveVoiceSettings() {
+            const input = document.getElementById('customApiKeyInput');
+            runtimeGeminiApiKey = (input.value || '').trim();
+            ttsAudioCache.clear();
+            updateVoiceBadgeUI("Suara AI Gemini Aktif ✨", true);
+            closeVoiceModal();
+            speakText("Tetapan suara manusia telah disimpan.", 0.95);
+        }
+
+        function testVoiceNow() {
+            const input = document.getElementById('customApiKeyInput');
+            runtimeGeminiApiKey = (input.value || '').trim();
+            ttsAudioCache.clear();
+            speakText("Murid-murid beratur semasa membeli makanan di kantin.", 0.92);
+        }
+
+        function updateVoiceBadgeUI(label, isPremium = true) {
+            const txt = document.getElementById('voiceStatusText');
+            const dot = document.getElementById('voiceStatusDot');
+            if (txt) txt.textContent = label;
+            if (dot) {
+                dot.className = isPremium
+                    ? "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"
+                    : "w-2.5 h-2.5 rounded-full bg-sky-500";
+            }
+        }
 
         function initNaturalVoices() {
             if (!('speechSynthesis' in window)) return;
             const loadVoices = () => {
                 const voices = window.speechSynthesis.getVoices();
                 if (!voices.length) return;
-                // Prioritize natural/neural Malaysian or Indonesian voices (Yasmin, Rizwan, Natural, Google Bahasa)
-                preferredMalayVoice =
-                    voices.find(v => /ms-MY/i.test(v.lang) && /(Natural|Online|Neural|Yasmin|Rizwan|Google)/i.test(v.name)) ||
-                    voices.find(v => /ms/i.test(v.lang)) ||
-                    voices.find(v => /id-ID/i.test(v.lang) && /(Natural|Online|Neural|Gadis|Ardi|Google)/i.test(v.name)) ||
-                    voices.find(v => /id/i.test(v.lang)) ||
-                    null;
+                // Cari suara Neural/Natural Microsoft Yasmin/Osman atau Google Bahasa Melayu terlebih dahulu
+                const scoredVoices = voices
+                    .filter(v => /^(ms|id)/i.test(v.lang) || /(Malay|Melayu|Indonesia|Yasmin|Osman|Gadis|Ardi)/i.test(v.name))
+                    .map(v => {
+                        let score = 0;
+                        if (/ms/i.test(v.lang)) score += 30;
+                        if (/Natural|Online|Neural/i.test(v.name)) score += 50;
+                        if (/Yasmin|Osman|Google/i.test(v.name)) score += 40;
+                        if (/id/i.test(v.lang)) score += 15;
+                        return { voice: v, score };
+                    })
+                    .sort((a, b) => b.score - a.score);
+
+                preferredMalayVoice = scoredVoices.length > 0 ? scoredVoices[0].voice : null;
             };
             loadVoices();
             window.speechSynthesis.onvoiceschanged = loadVoices;
@@ -1604,10 +1705,10 @@
                 model: "gemini-2.5-flash-preview-tts"
             };
 
-            const apiKey = "";
+            const apiKey = runtimeGeminiApiKey || "";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
 
-            let delay = 1000;
+            let delay = 800;
             for (let attempt = 0; attempt < 2; attempt++) {
                 try {
                     const response = await fetch(apiUrl, {
@@ -1629,19 +1730,74 @@
                         const wavBlob = pcmToWav(pcm16, sampleRate);
                         const audioUrl = URL.createObjectURL(wavBlob);
                         ttsAudioCache.set(cacheKey, audioUrl);
+                        updateVoiceBadgeUI("Suara AI Gemini ✨", true);
                         return audioUrl;
                     }
                 } catch (e) {
-                    if (attempt === 1) return null;
+                    if (attempt === 0) return null;
                     await new Promise(r => setTimeout(r, delay));
-                    delay *= 2;
                 }
             }
             return null;
         }
 
+        // Lapisan 2: Penstriman Audio Cloud Bahasa Melayu (Berfungsi di Vercel tanpa API Key & tidak robotik!)
+        function playCloudMalayAudioStream(text, isSlow = false, onMetadataCallback = null) {
+            return new Promise((resolve) => {
+                const encoded = encodeURIComponent(text);
+                // Cuba titik akhir penstriman suara Google Bahasa Melayu (ms) yang natural
+                const streamUrls = [
+                    `https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=ms&ttsspeed=${isSlow ? '0.65' : '0.95'}&q=${encoded}`,
+                    `https://translate.googleapis.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ms&ttsspeed=${isSlow ? '0.65' : '0.95'}&q=${encoded}`
+                ];
+
+                let idx = 0;
+                const tryNextUrl = () => {
+                    if (idx >= streamUrls.length) {
+                        resolve(false);
+                        return;
+                    }
+                    const audio = new Audio(streamUrls[idx++]);
+                    activeAudioElement = audio;
+                    audio.playbackRate = isSlow ? 0.85 : 1.0;
+
+                    audio.onloadedmetadata = () => {
+                        if (onMetadataCallback && audio.duration && isFinite(audio.duration)) {
+                            onMetadataCallback((audio.duration / audio.playbackRate) * 1000);
+                        }
+                    };
+
+                    audio.onended = () => {
+                        setSpeakingState(false);
+                        resolve(true);
+                    };
+
+                    audio.onerror = () => {
+                        tryNextUrl();
+                    };
+
+                    const playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            updateVoiceBadgeUI("Suara Cloud Melayu 🎙️", true);
+                            if (onMetadataCallback && (!audio.duration || !isFinite(audio.duration))) {
+                                onMetadataCallback(null);
+                            }
+                        }).catch(() => {
+                            tryNextUrl();
+                        });
+                    }
+                };
+
+                tryNextUrl();
+            });
+        }
+
         function speakWithNaturalBrowserVoice(text, rate = 0.95, onWordCallback = null) {
-            if (!('speechSynthesis' in window)) return;
+            if (!('speechSynthesis' in window)) {
+                setSpeakingState(false);
+                return;
+            }
             window.speechSynthesis.cancel();
             const utter = new SpeechSynthesisUtterance(text);
             if (preferredMalayVoice) {
@@ -1650,11 +1806,13 @@
             } else {
                 utter.lang = 'ms-MY';
             }
-            // Human-like natural cadence (not robotic high pitch)
             utter.rate = rate;
-            utter.pitch = 1.02;
+            utter.pitch = 1.0;
 
-            utter.onstart = () => setSpeakingState(true);
+            utter.onstart = () => {
+                updateVoiceBadgeUI("Suara Peranti 🔊", false);
+                setSpeakingState(true);
+            };
             utter.onend = () => setSpeakingState(false);
             utter.onerror = () => setSpeakingState(false);
 
@@ -1668,8 +1826,9 @@
             stopAllSpeech();
             setSpeakingState(true);
             const isSlow = rate < 0.8;
-            const aiAudioUrl = await fetchGeminiHumanTTS(text, isSlow);
 
+            // 1. Cuba Suara AI Gemini dahulu
+            const aiAudioUrl = await fetchGeminiHumanTTS(text, isSlow);
             if (aiAudioUrl) {
                 activeAudioElement = new Audio(aiAudioUrl);
                 activeAudioElement.playbackRate = isSlow ? 0.88 : 1.0;
@@ -1678,10 +1837,14 @@
                 try {
                     await activeAudioElement.play();
                     return;
-                } catch (err) {
-                    // Fallback to browser voice if autoplay fails
-                }
+                } catch (err) {}
             }
+
+            // 2. Jika di Vercel tanpa API Key, gunakan Suara Cloud Bahasa Melayu (bukan suara robotik PC)
+            const cloudSuccess = await playCloudMalayAudioStream(text, isSlow);
+            if (cloudSuccess) return;
+
+            // 3. Pelan sokongan terakhir (Offline)
             speakWithNaturalBrowserVoice(text, rate);
         }
 
@@ -1706,9 +1869,10 @@
             setSpeakingState(true);
 
             const startWordHighlighting = (totalDurationMs) => {
+                clearSpeechTimers();
                 const intervalMs = totalDurationMs
                     ? Math.max(280, Math.floor((totalDurationMs - 250) / words.length))
-                    : (isSlow ? 580 : 400);
+                    : (isSlow ? 560 : 390);
 
                 words.forEach((_, idx) => {
                     const t = setTimeout(() => {
@@ -1725,6 +1889,7 @@
                 wordHighlightTimers.push(endTimer);
             };
 
+            // 1. Cuba Gemini AI TTS
             const aiAudioUrl = await fetchGeminiHumanTTS(scene.sentence, isSlow);
             speedBadge.textContent = isSlow ? 'Suara Manusia: Perlahan 🐢' : 'Suara Manusia: Normal 🔊';
 
@@ -1739,11 +1904,18 @@
                 try {
                     await activeAudioElement.play();
                     return;
-                } catch (e) {
-                    // Fallback below
-                }
+                } catch (e) {}
             }
 
+            // 2. Cuba Penstriman Audio Cloud Bahasa Melayu (Berfungsi terus di Vercel)
+            const cloudPlayed = await playCloudMalayAudioStream(
+                scene.sentence,
+                isSlow,
+                (durationMs) => startWordHighlighting(durationMs)
+            );
+            if (cloudPlayed) return;
+
+            // 3. Pelan sokongan suara pelayar
             speakWithNaturalBrowserVoice(scene.sentence, rate, () => startWordHighlighting(null));
         }
 
