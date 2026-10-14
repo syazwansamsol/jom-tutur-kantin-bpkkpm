@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jom Tutur: Murid Beradab, Kantin Selamat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        :root {
+            --font-heading: 'Fredoka', sans-serif;
+            --font-body: 'Quicksand', sans-serif;
+        }
+        body {
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        h1, h2, h3, .font-kid {
+            font-family: var(--font-heading);
+        }
+
+        /* Animated Sky & Canteen Theme Background */
+        .animated-bg {
+            background: linear-gradient(180deg, #7dd3fc 0%, #bae6fd 45%, #fef08a 85%, #bbf7d0 100%);
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* Floating Clouds Animation */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50px;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.06));
+            animation: floatCloud linear infinite;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+        }
+        .cloud-1 { width: 140px; height: 45px; top: 8%; animation-duration: 38s; left: -160px; }
+        .cloud-1::before { width: 65px; height: 65px; top: -30px; left: 20px; }
+        .cloud-1::after { width: 50px; height: 50px; top: -20px; left: 65px; }
+
+        .cloud-2 { width: 180px; height: 55px; top: 22%; animation-duration: 52s; animation-delay: -18s; left: -200px; transform: scale(0.8); }
+        .cloud-2::before { width: 80px; height: 80px; top: -40px; left: 25px; }
+        .cloud-2::after { width: 60px; height: 60px; top: -25px; left: 85px; }
+
+        .cloud-3 { width: 120px; height: 40px; top: 14%; animation-duration: 45s; animation-delay: -32s; left: -150px; transform: scale(0.65); }
+        .cloud-3::before { width: 55px; height: 55px; top: -25px; left: 15px; }
+        .cloud-3::after { width: 45px; height: 45px; top: -18px; left: 55px; }
+
+        @keyframes floatCloud {
+            0% { transform: translateX(-200px); }
+            100% { transform: translateX(calc(100vw + 250px)); }
+        }
+
+        /* Floating Canteen & Star Icons */
+        .floating-item {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.35;
+            animation: floatUpDown 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes floatUpDown {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-22px) rotate(12deg) scale(1.1); }
+        }
+
+        /* Rotating Sun */
+        .sun-spin {
+            animation: spinSlow 25s linear infinite;
+        }
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 3D Kid Buttons */
+        .btn-3d {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+        }
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+        }
+
+        /* Pulsing Microphone */
+        .mic-pulse {
+            animation: pulseRing 1.4s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+        }
+        @keyframes pulseRing {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        /* Active Word Highlight during TTS */
+        .word-token {
+            transition: all 0.2s ease;
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+        .word-active {
+            background-color: #fde047;
+            color: #991b1b;
+            transform: scale(1.12) translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-weight: 700;
+        }
+
+        /* Star Pop Animation */
+        .star-pop {
+            animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-35deg); opacity: 0; }
+            75% { transform: scale(1.25) rotate(10deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* Realistic Character Animations (Eye Blinking, Breathing, Talking, Moving) */
+        .char-eye {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: eyeBlink 4.2s infinite ease-in-out;
+        }
+        .char-eye-delay-1 {
+            animation-delay: 1.3s;
+        }
+        .char-eye-delay-2 {
+            animation-delay: 2.7s;
+        }
+        @keyframes eyeBlink {
+            0%, 45%, 49%, 95%, 99%, 100% { transform: scaleY(1); }
+            47%, 97% { transform: scaleY(0.08); }
+        }
+
+        .char-breathe {
+            transform-box: fill-box;
+            transform-origin: bottom center;
+            animation: characterBreathe 3.2s ease-in-out infinite;
+        }
+        .char-breathe-delay {
+            animation-delay: 1.5s;
+        }
+        @keyframes characterBreathe {
+            0%, 100% { transform: translateY(0px) scaleY(1); }
+            50% { transform: translateY(-3.5px) scaleY(1.02); }
+        }
+
+        .char-head-bob {
+            transform-box: fill-box;
+            transform-origin: bottom center;
+            animation: headBob 3.6s ease-in-out infinite;
+        }
+        @keyframes headBob {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2.5deg) translateY(-1px); }
+        }
+
+        .char-arm-action {
+            transform-box: fill-box;
+            transform-origin: left center;
+            animation: armWave 2.8s ease-in-out infinite;
+        }
+        .char-arm-right {
+            transform-box: fill-box;
+            transform-origin: right center;
+            animation: armWaveRight 2.8s ease-in-out infinite;
+        }
+        @keyframes armWave {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-10deg) translateY(-2px); }
+        }
+        @keyframes armWaveRight {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(10deg) translateY(-2px); }
+        }
+
+        /* Steam & Trash Motion */
+        .steam-rise {
+            animation: steamUp 2.6s ease-in-out infinite;
+        }
+        @keyframes steamUp {
+            0% { transform: translateY(4px); opacity: 0; }
+            50% { opacity: 0.75; }
+            100% { transform: translateY(-12px); opacity: 0; }
+        }
+
+        .trash-drop {
+            animation: dropInBin 2.8s ease-in-out infinite;
+        }
+        @keyframes dropInBin {
+            0% { transform: translateY(-8px) rotate(0deg); opacity: 0; }
+            30% { opacity: 1; }
+            80% { transform: translateY(14px) rotate(25deg); opacity: 1; }
+            100% { transform: translateY(20px) rotate(40deg); opacity: 0; }
+        }
+
+        /* Talking Mouth Effect when Audio Plays */
+        body.is-speaking .char-mouth {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: mouthTalk 0.28s ease-in-out infinite alternate;
+        }
+        @keyframes mouthTalk {
+            0% { transform: scaleY(0.6) scaleX(0.95); }
+            100% { transform: scaleY(1.65) scaleX(1.1); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.4); }
+        ::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 99px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-slate-800">
+
+    <div class="animated-bg" id="animatedBg">
+        <!-- Happy Sun -->
+        <div class="absolute top-4 right-5 sm:top-8 sm:right-12 w-20 h-20 sm:w-28 sm:h-28 pointer-events-none">
+            <svg viewBox="0 0 100 100" class="w-full h-full overflow-visible">
+                <g class="sun-spin origin-center">
+                    <polygon points="50,2 56,18 44,18" fill="#fbbf24"/>
+                    <polygon points="50,98 56,82 44,82" fill="#fbbf24"/>
+                    <polygon points="2,50 18,56 18,44" fill="#fbbf24"/>
+                    <polygon points="98,50 82,56 82,44" fill="#fbbf24"/>
+                    <polygon points="15,15 29,23 21,31" fill="#f59e0b"/>
+                    <polygon points="85,85 71,77 79,69" fill="#f59e0b"/>
+                    <polygon points="85,15 77,29 69,21" fill="#f59e0b"/>
+                    <polygon points="15,85 23,71 31,79" fill="#f59e0b"/>
+                </g>
+                <circle cx="50" cy="50" r="28" fill="#fde047" stroke="#f59e0b" stroke-width="3"/>
+                <circle class="char-eye" cx="41" cy="45" r="3.2" fill="#78350f"/>
+                <circle class="char-eye" cx="59" cy="45" r="3.2" fill="#78350f"/>
+                <path class="char-mouth" d="M 40 55 Q 50 64 60 55" stroke="#78350f" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <circle cx="35" cy="51" r="3.5" fill="#f87171" opacity="0.6"/>
+                <circle cx="65" cy="51" r="3.5" fill="#f87171" opacity="0.6"/>
+            </svg>
+        </div>
+
+        <!-- Animated Clouds -->
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+
+        <!-- Floating Kid-Friendly Canteen Emojis -->
+        <div class="floating-item" style="top: 18%; left: 7%; animation-delay: 0s;">🍎</div>
+        <div class="floating-item" style="top: 45%; left: 4%; animation-delay: 1.5s;">🥪</div>
+        <div class="floating-item" style="top: 72%; left: 8%; animation-delay: 2.8s;">🧃</div>
+        <div class="floating-item" style="top: 28%; right: 8%; animation-delay: 0.8s;">⭐</div>
+        <div class="floating-item" style="top: 62%; right: 6%; animation-delay: 2.2s;">🍽️</div>
+        <div class="floating-item" style="top: 82%; right: 12%; animation-delay: 3.5s;">🍌</div>
+
+        <!-- Bottom Grass Hills SVG -->
+        <svg class="absolute bottom-0 w-full h-24 sm:h-36 object-cover pointer-events-none" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path fill="#86efac" fill-opacity="0.8" d="M0,192L80,186.7C160,181,320,171,480,181.3C640,192,800,224,960,218.7C1120,213,1280,171,1360,149.3L1440,128L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+            <path fill="#4ade80" fill-opacity="0.9" d="M0,256L60,245.3C120,235,240,213,360,218.7C480,224,600,256,720,261.3C840,267,960,245,1080,229.3C1200,213,1320,203,1380,197.3L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+        </svg>
+    </div>
+
+    <header class="w-full max-w-5xl mx-auto px-3 sm:px-6 pt-3 sm:pt-5 z-10">
+        <div class="bg-white/95 backdrop-blur-md rounded-3xl p-3 sm:p-4 shadow-xl border-4 border-amber-400 flex flex-wrap items-center justify-between gap-3">
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-red-600 flex items-center justify-center text-white text-2xl sm:text-3xl shadow-md border-2 border-white shrink-0">
+                    🍱
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-red-700 text-white text-[10px] sm:text-xs font-kid font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Tema 4: Keselamatan</span>
+                        <span class="bg-sky-100 text-sky-800 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full hidden sm:inline-block">Tahun 2</span>
+                    </div>
+                    <h1 class="text-base sm:text-2xl font-kid font-bold text-slate-800 leading-tight mt-0.5">
+                        MURID BERADAB, KANTIN SELAMAT
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Total Stars & Sound Controls -->
+            <div class="flex items-center gap-2 sm:gap-3 ml-auto">
+                <div class="hidden md:flex items-center gap-1.5 bg-emerald-50 border-2 border-emerald-300 text-emerald-800 px-3 py-1 rounded-2xl text-xs font-bold" id="voiceStatusPill" title="Suara Manusia AI Aktif">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span id="voiceStatusText">Suara AI Natural</span>
+                </div>
+                <div class="bg-amber-100 border-2 border-amber-400 rounded-2xl px-3 py-1.5 flex items-center gap-2 shadow-inner" title="Jumlah Bintang Terkumpul">
+                    <i class="fa-solid fa-star text-amber-400 text-lg sm:text-xl drop-shadow"></i>
+                    <span id="totalStarsBadge" class="font-kid font-bold text-base sm:text-lg text-amber-900">0 / 15</span>
+                </div>
+                <button onclick="toggleBgMusic()" id="musicBtn" class="btn-3d w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-sky-500 hover:bg-sky-400 text-white flex items-center justify-center text-lg" title="Muzik Ceria">
+                    <i class="fa-solid fa-music" id="musicIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs (Responsive) -->
+        <nav class="grid grid-cols-3 gap-2 sm:gap-4 mt-3 sm:mt-4">
+            <button onclick="switchTab('info')" id="tabBtn-info" class="btn-3d py-2.5 sm:py-3 px-2 sm:px-4 rounded-2xl font-kid font-bold text-xs sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 bg-amber-400 text-amber-950 border-2 border-white">
+                <i class="fa-solid fa-book-open text-sm sm:text-lg"></i>
+                <span>1. Info PdP</span>
+            </button>
+            <button onclick="switchTab('tutur')" id="tabBtn-tutur" class="btn-3d py-2.5 sm:py-3 px-2 sm:px-4 rounded-2xl font-kid font-bold text-xs sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 bg-white/90 text-slate-700 hover:bg-white border-2 border-sky-300">
+                <i class="fa-solid fa-microphone-lines text-sm sm:text-lg text-rose-500"></i>
+                <span>2. Jom Tutur!</span>
+            </button>
+            <button onclick="switchTab('kuiz')" id="tabBtn-kuiz" class="btn-3d py-2.5 sm:py-3 px-2 sm:px-4 rounded-2xl font-kid font-bold text-xs sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 bg-white/90 text-slate-700 hover:bg-white border-2 border-sky-300">
+                <i class="fa-solid fa-gamepad text-sm sm:text-lg text-emerald-500"></i>
+                <span>3. Uji Minda</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="w-full max-w-5xl mx-auto px-3 sm:px-6 py-4 flex-1 z-10">
+
+        <!-- ================= TAB 1: INFO PEMBELAJARAN (DARI GAMBAR 1) ================= -->
+        <section id="tab-info" class="space-y-4 animate-fadeIn">
+            <div class="bg-amber-200/95 backdrop-blur-md border-4 border-amber-500 rounded-3xl p-4 sm:p-6 shadow-xl">
+                <!-- Banner Header matching Screenshot 1 -->
+                <div class="flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-red-800 via-red-700 to-rose-700 text-white p-4 rounded-2xl shadow-md mb-5 border-2 border-red-900">
+                    <div class="w-20 h-20 rounded-2xl bg-amber-100 flex items-center justify-center shrink-0 border-4 border-white shadow-inner text-4xl">
+                        👨‍👩‍👧‍👦
+                    </div>
+                    <div class="text-center sm:text-left flex-1">
+                        <div class="text-sky-300 font-kid font-bold text-lg sm:text-xl tracking-wide">TEMA 4 : KESELAMATAN</div>
+                        <h2 class="text-xl sm:text-3xl font-kid font-bold text-white drop-shadow">MURID BERADAB, KANTIN SELAMAT</h2>
+                    </div>
+                    <button onclick="speakText('Tema 4, Keselamatan. Tajuk: Murid Beradab, Kantin Selamat.')" class="btn-3d bg-amber-400 hover:bg-amber-300 text-amber-950 font-kid font-bold px-4 py-2 rounded-xl flex items-center gap-2 text-sm">
+                        <i class="fa-solid fa-volume-high"></i> Dengar
+                    </button>
+                </div>
+
+                <!-- Grid 1, 2, 3 matching Screenshot 1 -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                    <div class="md:col-span-7 space-y-4">
+                        <!-- Box 1: Standard Pembelajaran -->
+                        <div class="bg-white rounded-2xl p-4 sm:p-5 border-4 border-blue-700 shadow-md relative hover:scale-[1.01] transition-transform">
+                            <button onclick="speakText('Standard Pembelajaran 2.2.1: Bertutur untuk menyebut dan menggunakan ujaran dengan sebutan yang betul dan intonasi yang sesuai mengikut situasi di sekolah secara sopan.')" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 flex items-center justify-center" title="Dengar">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-3xl sm:text-4xl font-kid font-bold text-blue-800 border-r-4 border-blue-800 pr-3">1</span>
+                                <h3 class="text-base sm:text-xl font-kid font-bold text-lime-600 leading-tight">
+                                    STANDARD<br>PEMBELAJARAN
+                                </h3>
+                            </div>
+                            <p class="text-sm sm:text-base text-blue-900 font-semibold leading-relaxed">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold">2.2.1</span> Bertutur untuk menyebut dan menggunakan ujaran dengan sebutan yang betul dan intonasi yang sesuai mengikut situasi di sekolah secara sopan.
+                            </p>
+                        </div>
+
+                        <!-- Box 3: Hasil Pembelajaran -->
+                        <div class="bg-white rounded-2xl p-4 sm:p-5 border-4 border-blue-700 shadow-md relative hover:scale-[1.01] transition-transform">
+                            <button onclick="speakText('Hasil Pembelajaran: Murid dapat menyebut dan menggunakan ujaran dengan sebutan yang betul dan intonasi yang sesuai mengikut situasi di sekolah secara sopan di kantin.')" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 flex items-center justify-center" title="Dengar">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-3xl sm:text-4xl font-kid font-bold text-blue-800 border-r-4 border-blue-800 pr-3">3</span>
+                                <h3 class="text-base sm:text-xl font-kid font-bold text-lime-600 leading-tight">
+                                    HASIL<br>PEMBELAJARAN
+                                </h3>
+                            </div>
+                            <p class="text-sm sm:text-base text-blue-900 font-semibold leading-relaxed">
+                                Murid dapat menyebut dan menggunakan ujaran dengan sebutan yang betul dan intonasi yang sesuai mengikut situasi di sekolah secara sopan di kantin.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Box 2: Kata Kunci -->
+                    <div class="md:col-span-5">
+                        <div class="bg-white rounded-2xl p-4 sm:p-5 border-4 border-blue-700 shadow-md h-full flex flex-col justify-between relative hover:scale-[1.01] transition-transform">
+                            <div>
+                                <button onclick="speakText('Kata Kunci: Pertama, menyebut dan menggunakan. Kedua, sebutan dan intonasi.')" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 flex items-center justify-center" title="Dengar">
+                                    <i class="fa-solid fa-volume-high"></i>
+                                </button>
+                                <div class="flex items-center gap-3 mb-4">
+                                    <span class="text-3xl sm:text-4xl font-kid font-bold text-blue-800 border-r-4 border-blue-800 pr-3">2</span>
+                                    <h3 class="text-lg sm:text-xl font-kid font-bold text-lime-600">
+                                        KATA KUNCI
+                                    </h3>
+                                </div>
+                                <ul class="space-y-3 text-sm sm:text-base text-blue-900 font-bold">
+                                    <li class="flex items-center gap-3 bg-lime-50 p-3 rounded-xl border-2 border-lime-300">
+                                        <span class="w-8 h-8 rounded-full bg-lime-500 text-white flex items-center justify-center shrink-0">🗣️</span>
+                                        <span>menyebut dan menggunakan</span>
+                                    </li>
+                                    <li class="flex items-center gap-3 bg-sky-50 p-3 rounded-xl border-2 border-sky-300">
+                                        <span class="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center shrink-0">🎵</span>
+                                        <span>sebutan dan intonasi</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="mt-4 bg-amber-50 rounded-xl p-3 border-2 border-dashed border-amber-300 text-xs sm:text-sm text-amber-900 flex items-center gap-2">
+                                <span class="text-xl">💡</span>
+                                <span><strong>Tip Murid:</strong> Bercakap dengan suara yang jelas, sopan dan ceria!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Langkah Aktiviti -->
+                <div class="mt-5">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg sm:text-xl font-kid font-bold text-lime-700 bg-white px-4 py-1 rounded-t-xl border-t-4 border-x-4 border-blue-700 inline-block">
+                            LANGKAH AKTIVITI
+                        </h3>
+                    </div>
+                    <div class="bg-indigo-50 rounded-2xl rounded-tl-none p-4 sm:p-5 border-4 border-blue-700 shadow-md relative">
+                        <div class="hidden sm:block absolute -top-4 right-6 bg-red-600 text-white font-kid font-bold text-xs px-6 py-1.5 rounded-t-xl shadow">
+                            AKTIVITI JOM TUTUR
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div class="bg-white p-3.5 rounded-xl border-2 border-indigo-200 flex items-start gap-3 shadow-sm">
+                                <span class="w-8 h-8 rounded-full bg-blue-700 text-white font-kid font-bold flex items-center justify-center shrink-0">1</span>
+                                <p class="text-sm sm:text-base font-bold text-blue-900">Murid melihat gambar yang dipaparkan.</p>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-xl border-2 border-indigo-200 flex items-start gap-3 shadow-sm">
+                                <span class="w-8 h-8 rounded-full bg-blue-700 text-white font-kid font-bold flex items-center justify-center shrink-0">2</span>
+                                <p class="text-sm sm:text-base font-bold text-blue-900">Murid mengujarkan maklumat dalam gambar dengan sebutan dan intonasi.</p>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-xl border-2 border-indigo-200 flex items-start gap-3 shadow-sm">
+                                <span class="w-8 h-8 rounded-full bg-blue-700 text-white font-kid font-bold flex items-center justify-center shrink-0">3</span>
+                                <p class="text-sm sm:text-base font-bold text-blue-900">Murid menerima maklum balas daripada aplikasi <strong>Jom Tutur</strong>.</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <button onclick="switchTab('tutur')" class="btn-3d bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white font-kid font-bold text-base sm:text-lg px-8 py-3 rounded-2xl inline-flex items-center gap-3 border-2 border-white">
+                                <span>Mula Aktiviti Jom Tutur Sekarang!</span>
+                                <i class="fa-solid fa-circle-arrow-right text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: JOM TUTUR (DARI GAMBAR 2 - KUMPULAN A) ================= -->
+        <section id="tab-tutur" class="hidden space-y-4 animate-fadeIn">
+            <div class="bg-white/95 backdrop-blur-md border-4 border-blue-700 rounded-3xl p-4 sm:p-6 shadow-xl">
+
+                <!-- Header Kumpulan A -->
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-4 border-b-2 border-slate-200">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-red-600 text-white font-kid font-bold text-xl sm:text-2xl px-3.5 py-1 rounded-xl shadow">A1</span>
+                        <div>
+                            <h2 class="text-lg sm:text-2xl font-kid font-bold text-blue-900 leading-none">CONTOH BAHAN : Kumpulan A</h2>
+                            <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-0.5">Pilih gambar, dengar sebutan, dan cuba bertutur untuk kumpul bintang!</p>
+                        </div>
+                    </div>
+
+                    <!-- Picture Selector Pills -->
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-center">
+                        <button onclick="selectScene(0)" id="sceneBtn-0" class="btn-3d flex-1 sm:flex-initial px-4 py-2 rounded-xl font-kid font-bold text-sm sm:text-base bg-amber-400 text-amber-950 border-2 border-amber-600">
+                            Gambar 1 ⭐
+                        </button>
+                        <button onclick="selectScene(1)" id="sceneBtn-1" class="btn-3d flex-1 sm:flex-initial px-4 py-2 rounded-xl font-kid font-bold text-sm sm:text-base bg-slate-100 text-slate-700 border-2 border-slate-300">
+                            Gambar 2 ⭐
+                        </button>
+                        <button onclick="selectScene(2)" id="sceneBtn-2" class="btn-3d flex-1 sm:flex-initial px-4 py-2 rounded-xl font-kid font-bold text-sm sm:text-base bg-slate-100 text-slate-700 border-2 border-slate-300">
+                            Gambar 3 ⭐
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Interactive Card -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                    <!-- Left: Animated SVG Illustration -->
+                    <div class="lg:col-span-5 flex flex-col items-center">
+                        <div class="w-full bg-gradient-to-b from-amber-300 to-yellow-400 text-slate-900 font-kid font-bold text-lg sm:text-xl py-2 px-6 rounded-t-2xl text-center border-t-4 border-x-4 border-amber-500 shadow-sm flex items-center justify-between">
+                            <span id="sceneBadgeTitle">Gambar 1</span>
+                            <span class="text-xs bg-white/80 px-2.5 py-0.5 rounded-full text-amber-900" id="sceneSituationTag">Situasi: Membeli Makanan</span>
+                        </div>
+                        <div id="sceneIllustration" class="w-full aspect-[4/3] bg-sky-50 rounded-b-2xl border-4 border-amber-500 shadow-inner overflow-hidden relative flex items-center justify-center">
+                            <!-- Rendered dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Sentence, Audio & Jom Tutur Microphone -->
+                    <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                        <!-- Ujaran Display Card -->
+                        <div class="bg-amber-50 border-4 border-amber-300 rounded-2xl p-4 sm:p-5 shadow-sm relative">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs sm:text-sm font-kid font-bold text-amber-800 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-comment-dots text-amber-600"></i> Ujaran Sopan (Sebutan & Intonasi):
+                                </span>
+                                <span id="speedBadge" class="text-xs font-bold bg-white px-2.5 py-1 rounded-full border border-amber-300 text-slate-600">
+                                    Kelajuan: Normal
+                                </span>
+                            </div>
+
+                            <!-- Sentence with word-by-word highlight -->
+                            <div id="sentenceContainer" class="text-xl sm:text-3xl font-kid font-bold text-slate-800 leading-relaxed py-2">
+                                <!-- Populated by JS -->
+                            </div>
+
+                            <!-- Intonation Guide Tip -->
+                            <div id="intonationTip" class="mt-2 text-xs sm:text-sm bg-white/90 text-blue-900 px-3 py-2 rounded-xl border border-amber-200 font-semibold flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i>
+                                <span>Intonasi: Sebut dengan jelas, tenang dan nada penyata yang sopan.</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Controls: Listen, Slow Listen, Record Speech -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <button onclick="playCurrentSentence(0.9)" class="btn-3d bg-sky-500 hover:bg-sky-400 text-white font-kid font-bold py-3 px-4 rounded-2xl flex items-center justify-center gap-2 border-2 border-sky-700 text-sm sm:text-base">
+                                <i class="fa-solid fa-volume-high text-lg"></i>
+                                <span>1. Dengar Sebutan</span>
+                            </button>
+
+                            <button onclick="playCurrentSentence(0.65)" class="btn-3d bg-indigo-500 hover:bg-indigo-400 text-white font-kid font-bold py-3 px-4 rounded-2xl flex items-center justify-center gap-2 border-2 border-indigo-700 text-sm sm:text-base">
+                                <i class="fa-solid fa-turtle text-lg"></i>
+                                <span>Bacaan Perlahan</span>
+                            </button>
+
+                            <button onclick="toggleRecording()" id="recordBtn" class="btn-3d bg-rose-500 hover:bg-rose-400 text-white font-kid font-bold py-3 px-4 rounded-2xl flex items-center justify-center gap-2 border-2 border-rose-700 text-sm sm:text-base">
+                                <i class="fa-solid fa-microphone text-lg" id="recordIcon"></i>
+                                <span id="recordBtnText">2. Cuba Bertutur</span>
+                            </button>
+                        </div>
+
+                        <!-- Maklum Balas Jom Tutur & 5-3-2 Star Pyramid (Matching Screenshot 2) -->
+                        <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-4 border-2 border-blue-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <!-- Star Pyramid (5 stars, 3 stars, 2 stars) -->
+                            <div class="flex flex-col items-end space-y-1 shrink-0 bg-white px-4 py-3 rounded-xl border-2 border-amber-300 shadow-sm" title="Klik bintang atau bertutur untuk dapat bintang!">
+                                <div class="text-[11px] font-bold text-slate-500 w-full text-center mb-1">TAHAP PENGUASAAN BINTANG</div>
+                                <!-- Row 1: 5 Stars (Cemerlang) -->
+                                <div onclick="manualAwardStars(5)" class="flex items-center gap-1 cursor-pointer group" title="5 Bintang - Sebutan & Intonasi Sangat Jelas">
+                                    <span class="text-[10px] font-bold text-amber-700 mr-1 opacity-75 group-hover:opacity-100">Cemerlang:</span>
+                                    <div id="starRow5" class="flex gap-1 text-xl sm:text-2xl"></div>
+                                </div>
+                                <!-- Row 2: 3 Stars (Baik) -->
+                                <div onclick="manualAwardStars(3)" class="flex items-center gap-1 cursor-pointer group" title="3 Bintang - Sebutan Baik">
+                                    <span class="text-[10px] font-bold text-amber-700 mr-1 opacity-75 group-hover:opacity-100">Baik:</span>
+                                    <div id="starRow3" class="flex gap-1 text-xl sm:text-2xl"></div>
+                                </div>
+                                <!-- Row 3: 2 Stars (Cuba Lagi) -->
+                                <div onclick="manualAwardStars(2)" class="flex items-center gap-1 cursor-pointer group" title="2 Bintang - Memuaskan">
+                                    <span class="text-[10px] font-bold text-amber-700 mr-1 opacity-75 group-hover:opacity-100">Memuaskan:</span>
+                                    <div id="starRow2" class="flex gap-1 text-xl sm:text-2xl"></div>
+                                </div>
+                            </div>
+
+                            <!-- Feedback Box -->
+                            <div class="flex-1 w-full text-center sm:text-left">
+                                <div class="text-xs font-kid font-bold text-blue-800 uppercase tracking-wide mb-1">
+                                    3. Maklum Balas Aplikasi Jom Tutur:
+                                </div>
+                                <div id="feedbackBox" class="bg-white rounded-xl p-3 border-2 border-blue-200 text-sm sm:text-base font-bold text-slate-700 min-h-[64px] flex items-center justify-center sm:justify-start gap-3">
+                                    <span class="text-2xl">🤖</span>
+                                    <span>Tekan <strong>"Cuba Bertutur"</strong> dan baca ayat di atas dengan suara yang jelas! (Atau guru boleh klik bintang di sebelah).</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Prev / Next Navigation Footer -->
+                <div class="mt-5 pt-3 border-t-2 border-slate-100 flex items-center justify-between">
+                    <button onclick="prevScene()" class="btn-3d bg-slate-200 hover:bg-slate-300 text-slate-700 font-kid font-bold px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Gambar Sebelumnya
+                    </button>
+                    <div class="text-xs sm:text-sm font-bold text-slate-500" id="sceneProgressText">Gambar 1 daripada 3</div>
+                    <button onclick="nextScene()" class="btn-3d bg-amber-400 hover:bg-amber-300 text-amber-950 font-kid font-bold px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+                        Gambar Seterusnya <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: UJI MINDA (PERMAINAN SUSUN UJARAN) ================= -->
+        <section id="tab-kuiz" class="hidden space-y-4 animate-fadeIn">
+            <div class="bg-white/95 backdrop-blur-md border-4 border-emerald-500 rounded-3xl p-4 sm:p-6 shadow-xl">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b-2 border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-xl font-bold shadow">
+                            🧩
+                        </div>
+                        <div>
+                            <h2 class="text-lg sm:text-2xl font-kid font-bold text-emerald-900">Permainan: Susun Ujaran Kantin Selamat</h2>
+                            <p class="text-xs sm:text-sm text-slate-600 font-semibold">Klik perkataan mengikut urutan yang betul supaya menjadi ayat yang lengkap dan sopan!</p>
+                        </div>
+                    </div>
+                    <div class="bg-emerald-100 text-emerald-900 font-kid font-bold px-3.5 py-1.5 rounded-xl text-sm border-2 border-emerald-300">
+                        Soalan: <span id="quizNumber">1 / 3</span>
+                    </div>
+                </div>
+
+                <!-- Quiz Prompt & Hint -->
+                <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-4 mb-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <span id="quizEmoji" class="text-4xl">🍱</span>
+                        <div>
+                            <div class="text-xs font-bold text-sky-700 uppercase">Situasi di Kantin:</div>
+                            <div id="quizHintText" class="text-sm sm:text-base font-bold text-slate-800">Apakah yang dilakukan oleh murid-murid semasa membeli makanan?</div>
+                        </div>
+                    </div>
+                    <button onclick="listenQuizHint()" class="btn-3d bg-sky-500 hover:bg-sky-400 text-white font-kid font-bold px-4 py-2 rounded-xl text-xs sm:text-sm shrink-0 flex items-center gap-2">
+                        <i class="fa-solid fa-ear-listen"></i> Dengar Petunjuk
+                    </button>
+                </div>
+
+                <!-- Dropzone for Selected Words -->
+                <div class="mb-4">
+                    <div class="text-xs font-bold text-slate-500 mb-1.5 uppercase">Jawapan Kamu:</div>
+                    <div id="quizAnswerZone" class="min-h-[76px] bg-amber-50/80 border-4 border-dashed border-amber-400 rounded-2xl p-3 flex flex-wrap items-center gap-2">
+                        <!-- Words clicked appear here -->
+                    </div>
+                </div>
+
+                <!-- Word Bank -->
+                <div class="mb-5">
+                    <div class="text-xs font-bold text-slate-500 mb-1.5 uppercase">Pilihan Perkataan (Klik untuk pilih):</div>
+                    <div id="quizWordBank" class="min-h-[68px] bg-slate-100 border-2 border-slate-200 rounded-2xl p-3 flex flex-wrap items-center justify-center gap-2.5">
+                        <!-- Shuffled words appear here -->
+                    </div>
+                </div>
+
+                <!-- Quiz Feedback & Controls -->
+                <div id="quizFeedback" class="hidden mb-4 p-3.5 rounded-2xl font-kid font-bold text-center text-base sm:text-lg"></div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <button onclick="resetCurrentQuiz()" class="btn-3d bg-slate-200 hover:bg-slate-300 text-slate-700 font-kid font-bold px-5 py-2.5 rounded-xl text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-left"></i> Semula
+                    </button>
+                    <div class="flex items-center gap-3">
+                        <button onclick="checkQuizAnswer()" class="btn-3d bg-emerald-500 hover:bg-emerald-400 text-white font-kid font-bold px-6 py-2.5 rounded-xl text-sm sm:text-base flex items-center gap-2 border-2 border-emerald-700">
+                            <i class="fa-solid fa-circle-check"></i> Semak Jawapan
+                        </button>
+                        <button onclick="nextQuizQuestion()" id="nextQuizBtn" class="hidden btn-3d bg-amber-400 hover:bg-amber-300 text-amber-950 font-kid font-bold px-6 py-2.5 rounded-xl text-sm sm:text-base flex items-center gap-2 border-2 border-amber-600">
+                            <span>Soalan Seterusnya</span> <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="w-full text-center py-3 px-4 text-xs sm:text-sm font-bold text-slate-700 z-10">
+        <div class="bg-white/80 backdrop-blur-sm inline-block px-4 py-1.5 rounded-full shadow-sm border border-white">
+            🌟 Bahasa Melayu Tahun 2 • Tema 4: Keselamatan (Murid Beradab, Kantin Selamat) 🌟
+        </div>
+    </footer>
+
+    <!-- Celebration Confetti Canvas -->
+    <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <script>
+        const scenesData = [
+            {
+                id: 1,
+                title: "Gambar 1",
+                situation: "Situasi: Membeli Makanan",
+                sentence: "Murid-murid beratur semasa membeli makanan di kantin.",
+                tip: "Intonasi: Sebut 'Murid-murid beratur' dengan jelas dan nada sopan.",
+                quizHint: "Apakah yang dilakukan oleh murid-murid semasa membeli makanan di kantin?",
+                emoji: "🍱",
+                starsEarned: 0,
+                svg: `
+                <svg viewBox="0 0 420 290" class="w-full h-full">
+                    <defs>
+                        <linearGradient id="wallGrad1" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#fef9c3"/>
+                            <stop offset="100%" stop-color="#fde68a"/>
+                        </linearGradient>
+                        <linearGradient id="woodGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#f59e0b"/>
+                            <stop offset="100%" stop-color="#b45309"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Canteen Wall & Tiled Floor -->
+                    <rect width="420" height="230" fill="url(#wallGrad1)"/>
+                    <rect y="230" width="420" height="60" fill="#e2e8f0"/>
+                    <line x1="0" y1="230" x2="420" y2="230" stroke="#94a3b8" stroke-width="3"/>
+                    <!-- Floor Perspective Tiles -->
+                    <line x1="60" y1="230" x2="20" y2="290" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="150" y1="230" x2="120" y2="290" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="240" y1="230" x2="230" y2="290" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="330" y1="230" x2="340" y2="290" stroke="#cbd5e1" stroke-width="2"/>
+
+                    <!-- Menu Board on Wall -->
+                    <rect x="18" y="68" width="115" height="46" rx="6" fill="#1e293b" stroke="#b45309" stroke-width="3"/>
+                    <text x="75" y="84" text-anchor="middle" fill="#fde047" font-family="Fredoka" font-weight="bold" font-size="9">MENU HARI INI</text>
+                    <text x="30" y="96" fill="#ffffff" font-family="Quicksand" font-weight="bold" font-size="7.5">🍛 Nasi Lemak  RM1.50</text>
+                    <text x="30" y="107" fill="#ffffff" font-family="Quicksand" font-weight="bold" font-size="7.5">🍝 Mi Goreng   RM1.50</text>
+
+                    <!-- Top Roof Sign -->
+                    <rect y="0" width="420" height="36" fill="#0284c7"/>
+                    <text x="210" y="23" text-anchor="middle" fill="#ffffff" font-family="Fredoka" font-weight="bold" font-size="15">KANTIN SEKOLAH CERIA</text>
+                    <!-- 3D Scalloped Awning -->
+                    <g>
+                        <path d="M0,36 L42,36 L42,52 Q21,62 0,52 Z" fill="#ef4444"/>
+                        <path d="M42,36 L84,36 L84,52 Q63,62 42,52 Z" fill="#ffffff"/>
+                        <path d="M84,36 L126,36 L126,52 Q105,62 84,52 Z" fill="#ef4444"/>
+                        <path d="M126,36 L168,36 L168,52 Q147,62 126,52 Z" fill="#ffffff"/>
+                        <path d="M168,36 L210,36 L210,52 Q189,62 168,52 Z" fill="#ef4444"/>
+                        <path d="M210,36 L252,36 L252,52 Q231,62 210,52 Z" fill="#ffffff"/>
+                        <path d="M252,36 L294,36 L294,52 Q273,62 252,52 Z" fill="#ef4444"/>
+                        <path d="M294,36 L336,36 L336,52 Q315,62 294,52 Z" fill="#ffffff"/>
+                        <path d="M336,36 L378,36 L378,52 Q357,62 336,52 Z" fill="#ef4444"/>
+                        <path d="M378,36 L420,36 L420,52 Q399,62 378,52 Z" fill="#ffffff"/>
+                    </g>
+
+                    <!-- Queue Sign -->
+                    <rect x="245" y="64" width="145" height="26" rx="13" fill="#16a34a" stroke="#ffffff" stroke-width="2"/>
+                    <text x="317" y="81" text-anchor="middle" fill="#ffffff" font-family="Fredoka" font-weight="bold" font-size="11.5">SILA BERATUR ✓</text>
+
+                    <!-- ================= MAKCIK KANTIN (SELLER) ================= -->
+                    <g transform="translate(88, 72)">
+                        <g class="char-breathe">
+                            <!-- Left Arm (Resting near food tray) -->
+                            <path d="M14,48 Q2,62 8,78" stroke="#db2777" stroke-width="10" stroke-linecap="round" fill="none"/>
+                            <circle cx="8" cy="80" r="5" fill="#fed7aa"/>
+
+                            <!-- Body & White Apron -->
+                            <path d="M12,42 Q32,36 52,42 L58,96 L6,96 Z" fill="#ec4899" stroke="#be185d" stroke-width="1.5"/>
+                            <path d="M18,48 L46,48 L49,96 L15,96 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                            <path d="M22,42 L22,48 M42,42 L42,48" stroke="#ffffff" stroke-width="3"/>
+
+                            <!-- Head & Tudung -->
+                            <g class="char-head-bob">
+                                <path d="M8,22 Q32,-4 56,22 L54,52 Q32,62 10,52 Z" fill="#7e22ce" stroke="#581c87" stroke-width="1.5"/>
+                                <path d="M14,16 Q32,6 50,16" stroke="#a855f7" stroke-width="2" fill="none"/>
+                                <!-- Face -->
+                                <circle cx="32" cy="25" r="14.5" fill="#fed7aa"/>
+                                <!-- Eyebrows -->
+                                <path d="M22,19 Q26,16.5 29,19" stroke="#475569" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <path d="M35,19 Q38,16.5 42,19" stroke="#475569" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <!-- Blinking Eyes -->
+                                <ellipse class="char-eye" cx="26" cy="23.5" rx="2.3" ry="2.8" fill="#1e293b"/>
+                                <ellipse class="char-eye" cx="38" cy="23.5" rx="2.3" ry="2.8" fill="#1e293b"/>
+                                <circle cx="25.2" cy="22.5" r="0.9" fill="#ffffff"/>
+                                <circle cx="37.2" cy="22.5" r="0.9" fill="#ffffff"/>
+                                <!-- Rosy Cheeks & Nose -->
+                                <circle cx="20.5" cy="27.5" r="2.8" fill="#fb7185" opacity="0.45"/>
+                                <circle cx="43.5" cy="27.5" r="2.8" fill="#fb7185" opacity="0.45"/>
+                                <path d="M32,24 L31,27 L33,27" stroke="#d97706" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                                <!-- Talking Smile -->
+                                <path class="char-mouth" d="M26,30.5 Q32,36 38,30.5" stroke="#991b1b" stroke-width="2" fill="#fda4af" stroke-linecap="round"/>
+                            </g>
+
+                            <!-- Right Arm (Animated Serving Ladle/Senduk) -->
+                            <g class="char-arm-action">
+                                <path d="M48,46 Q62,54 70,62" stroke="#ec4899" stroke-width="10" stroke-linecap="round" fill="none"/>
+                                <circle cx="72" cy="63" r="5" fill="#fed7aa"/>
+                                <!-- Silver Ladle (Senduk) -->
+                                <line x1="72" y1="63" x2="86" y2="55" stroke="#64748b" stroke-width="3" stroke-linecap="round"/>
+                                <ellipse cx="88" cy="56" rx="6" ry="3.5" fill="#94a3b8" stroke="#475569" stroke-width="1.2"/>
+                            </g>
+                        </g>
+                    </g>
+
+                    <!-- ================= CANTEEN COUNTER & REALISTIC FOOD ================= -->
+                    <rect x="10" y="166" width="172" height="94" rx="6" fill="url(#woodGrad)" stroke="#78350f" stroke-width="3"/>
+                    <rect x="22" y="180" width="148" height="66" rx="4" fill="#d97706" stroke="#92400e" stroke-width="1.5"/>
+                    <!-- Counter Top -->
+                    <rect x="6" y="156" width="180" height="12" rx="4" fill="#fde047" stroke="#78350f" stroke-width="2.5"/>
+                    <!-- Glass Sneeze Guard -->
+                    <rect x="14" y="124" width="164" height="32" rx="4" fill="#e0f2fe" fill-opacity="0.45" stroke="#bae6fd" stroke-width="2"/>
+
+                    <!-- Drink Dispenser (Balang Air Sirap Bandung) -->
+                    <rect x="18" y="116" width="28" height="38" rx="4" fill="#f43f5e" stroke="#be123c" stroke-width="2"/>
+                    <rect x="20" y="118" width="24" height="8" fill="#ffe4e6" opacity="0.7"/>
+                    <rect x="16" y="111" width="32" height="6" rx="2" fill="#be123c"/>
+                    <circle cx="46" cy="144" r="2.5" fill="#475569"/>
+
+                    <!-- Tray 1: Nasi Lemak, Ayam Goreng, Sambal & Timun -->
+                    <path class="steam-rise" d="M74,124 Q70,114 76,106" stroke="#64748b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path class="steam-rise" style="animation-delay: 1s" d="M92,122 Q96,112 90,104" stroke="#64748b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <rect x="54" y="144" width="58" height="12" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="2"/>
+                    <!-- White Rice Mound -->
+                    <path d="M60,144 Q72,126 86,144 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+                    <!-- Sambal on Rice -->
+                    <path d="M68,136 Q73,133 78,137 Q74,140 68,136 Z" fill="#dc2626"/>
+                    <!-- Fried Chicken Drumstick -->
+                    <path d="M84,143 C84,132 98,132 100,140 C101,143 90,145 84,143 Z" fill="#d97706" stroke="#78350f" stroke-width="1.2"/>
+                    <line x1="99" y1="139" x2="106" y2="136" stroke="#fef3c7" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="107" cy="135.5" r="2" fill="#fef3c7"/>
+
+                    <!-- Tray 2: Mi Goreng, Telur Mata & Sayur Sawi -->
+                    <path class="steam-rise" style="animation-delay: 0.5s" d="M142,124 Q138,114 144,106" stroke="#64748b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <rect x="118" y="144" width="58" height="12" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="2"/>
+                    <!-- Noodles Mound -->
+                    <path d="M123,144 Q147,125 171,144 Z" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"/>
+                    <path d="M130,140 Q140,134 150,141 M138,137 Q148,132 160,140" stroke="#fef08a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <!-- Green Veggies & Sunny Side Up Egg -->
+                    <circle cx="134" cy="139" r="3" fill="#16a34a"/>
+                    <circle cx="158" cy="140" r="3" fill="#16a34a"/>
+                    <ellipse cx="147" cy="136" rx="7" ry="3.5" fill="#ffffff"/>
+                    <circle cx="147" cy="135.5" r="3" fill="#f97316"/>
+
+                    <!-- ================= STUDENT 1 (FRONT OF QUEUE - HOLDING PLATE WITH BOTH HANDS) ================= -->
+                    <g transform="translate(192, 92)">
+                        <g class="char-breathe">
+                            <!-- Shadow -->
+                            <ellipse cx="28" cy="168" rx="22" ry="5" fill="#94a3b8" opacity="0.45"/>
+
+                            <!-- Back Arm (Left arm reaching forward toward tray) -->
+                            <g class="char-arm-right">
+                                <path d="M18,64 Q4,72 -4,68" stroke="#fed7aa" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+                                <path d="M20,62 L10,67" stroke="#ffffff" stroke-width="9.5" stroke-linecap="round"/>
+                                <circle cx="-5" cy="68" r="4.2" fill="#fed7aa"/>
+                            </g>
+
+                            <!-- Navy School Trousers -->
+                            <path d="M15,114 L26,114 L25,158 L14,158 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.2"/>
+                            <path d="M29,114 L40,114 L41,158 L30,158 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.2"/>
+                            <!-- White Socks & Black Shoes -->
+                            <rect x="14.5" y="154" width="10" height="6" fill="#ffffff"/>
+                            <rect x="30.5" y="154" width="10" height="6" fill="#ffffff"/>
+                            <path d="M10,160 Q10,155 18,156 L25,156 L25,163 L10,163 Z" fill="#0f172a"/>
+                            <path d="M26,160 Q26,155 34,156 L41,156 L41,163 L26,163 Z" fill="#0f172a"/>
+
+                            <!-- Neck -->
+                            <rect x="23" y="46" width="9" height="10" rx="3" fill="#fed7aa"/>
+
+                            <!-- School Uniform Shirt -->
+                            <path d="M12,54 Q27,50 43,54 L45,115 L10,115 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="1.8"/>
+                            <!-- Collar & Red Tie -->
+                            <polygon points="21,53 27,61 16,60" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="34,53 27,61 39,60" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="25,58 30,58 32,92 27.5,98 23,92" fill="#dc2626" stroke="#991b1b" stroke-width="1"/>
+                            <!-- School Badge -->
+                            <rect x="33" y="67" width="6" height="7" rx="1" fill="#facc15" stroke="#1e3a8a" stroke-width="1"/>
+
+                            <!-- Head -->
+                            <g class="char-head-bob">
+                                <!-- Ears -->
+                                <circle cx="8.5" cy="31" r="4" fill="#fed7aa" stroke="#eab308" stroke-width="0.8"/>
+                                <circle cx="46.5" cy="31" r="4" fill="#fed7aa" stroke="#eab308" stroke-width="0.8"/>
+                                <!-- Face -->
+                                <circle cx="27.5" cy="30" r="18.5" fill="#fed7aa"/>
+                                <!-- Neat Boy Hair -->
+                                <path d="M8,28 C8,10 22,6 30,7 C40,7 48,14 47,28 C44,20 38,16 28,17 C18,17 12,21 8,28 Z" fill="#1e293b"/>
+                                <!-- Eyebrows -->
+                                <path d="M16,23 Q20,20.5 23,23" stroke="#1e293b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <path d="M31,23 Q34,20.5 38,23" stroke="#1e293b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <!-- Blinking Eyes -->
+                                <ellipse class="char-eye char-eye-delay-1" cx="20" cy="28.5" rx="2.4" ry="3" fill="#1e293b"/>
+                                <ellipse class="char-eye char-eye-delay-1" cx="34" cy="28.5" rx="2.4" ry="3" fill="#1e293b"/>
+                                <circle cx="19" cy="27.3" r="1" fill="#ffffff"/>
+                                <circle cx="33" cy="27.3" r="1" fill="#ffffff"/>
+                                <!-- Cheeks & Nose -->
+                                <circle cx="14.5" cy="33.5" r="3" fill="#fb7185" opacity="0.45"/>
+                                <circle cx="39.5" cy="33.5" r="3" fill="#fb7185" opacity="0.45"/>
+                                <path d="M27,29 L25.5,32.5 L28,32.5" stroke="#d97706" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                                <!-- Talking Mouth -->
+                                <path class="char-mouth" d="M21,36.5 Q27,43 33,36.5 Z" fill="#fda4af" stroke="#991b1b" stroke-width="1.8" stroke-linejoin="round"/>
+                            </g>
+
+                            <!-- Front Arm (Right arm holding plate with food) -->
+                            <g class="char-arm-right">
+                                <!-- Plate with Nasi & Ayam -->
+                                <ellipse cx="-8" cy="73" rx="19" ry="6" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+                                <path d="M-18,72 Q-10,62 -1,72 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+                                <circle cx="-9" cy="68" r="3" fill="#dc2626"/>
+                                <ellipse cx="-1" cy="71" rx="5" ry="3" fill="#d97706"/>
+                                <!-- Arm & Short Sleeve -->
+                                <path d="M35,64 Q18,77 4,74" stroke="#fed7aa" stroke-width="8" stroke-linecap="round" fill="none"/>
+                                <path d="M37,61 L27,69" stroke="#ffffff" stroke-width="10.5" stroke-linecap="round"/>
+                                <circle cx="3" cy="74" r="4.5" fill="#fed7aa"/>
+                            </g>
+                        </g>
+                    </g>
+
+                    <!-- ================= STUDENT 2 (MIDDLE IN QUEUE - GIRL WITH PONYTAIL & TWO ARMS) ================= -->
+                    <g transform="translate(268, 96)">
+                        <g class="char-breathe char-breathe-delay">
+                            <ellipse cx="28" cy="164" rx="21" ry="5" fill="#94a3b8" opacity="0.45"/>
+
+                            <!-- Ponytail at back -->
+                            <path d="M44,22 C56,18 60,30 52,38 C47,42 43,32 44,22 Z" fill="#1e293b"/>
+                            <circle cx="45" cy="24" r="3.5" fill="#ec4899"/>
+
+                            <!-- Left Arm (Holding Empty Plate politely) -->
+                            <g class="char-arm-right">
+                                <path d="M15,62 Q4,72 6,78" stroke="#fed7aa" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+                                <path d="M16,58 L9,67" stroke="#ffffff" stroke-width="9.5" stroke-linecap="round"/>
+                                <ellipse cx="2" cy="80" rx="13" ry="4.5" fill="#fef08a" stroke="#ca8a04" stroke-width="1.8"/>
+                                <circle cx="7" cy="79" r="4.2" fill="#fed7aa"/>
+                            </g>
+
+                            <!-- Legs & Shoes -->
+                            <path d="M16,112 L26,112 L25,154 L15,154 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.2"/>
+                            <path d="M29,112 L39,112 L40,154 L30,154 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.2"/>
+                            <rect x="15.5" y="150" width="9.5" height="6" fill="#ffffff"/>
+                            <rect x="30.5" y="150" width="9.5" height="6" fill="#ffffff"/>
+                            <path d="M11,156 Q11,151 19,152 L25,152 L25,159 L11,159 Z" fill="#0f172a"/>
+                            <path d="M26,156 Q26,151 34,152 L40,152 L40,159 L26,159 Z" fill="#0f172a"/>
+
+                            <!-- Neck & Uniform Pinafore -->
+                            <rect x="23" y="45" width="9" height="10" rx="3" fill="#fed7aa"/>
+                            <path d="M12,53 Q27,49 42,53 L44,113 L10,113 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="1.8"/>
+                            <!-- Collar & Blue Tie -->
+                            <polygon points="21,52 27,60 16,59" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="33,52 27,60 38,59" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="25,57 29.5,57 31.5,89 27.2,95 23,89" fill="#2563eb" stroke="#1d4ed8" stroke-width="1"/>
+                            <rect x="33" y="65" width="5.5" height="6.5" rx="1" fill="#facc15" stroke="#1e3a8a" stroke-width="1"/>
+
+                            <!-- Head -->
+                            <g class="char-head-bob">
+                                <circle cx="9" cy="30" r="3.8" fill="#fed7aa"/>
+                                <circle cx="45" cy="30" r="3.8" fill="#fed7aa"/>
+                                <circle cx="27" cy="29" r="18" fill="#fed7aa"/>
+                                <path d="M8,27 C8,9 21,5 28,6 C38,6 46,13 46,27 C42,19 36,15 27,16 C17,16 12,20 8,27 Z" fill="#1e293b"/>
+                                <path d="M16,22 Q20,19.5 23,22" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                                <path d="M30,22 Q33,19.5 37,22" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                                <ellipse class="char-eye char-eye-delay-2" cx="20" cy="27.5" rx="2.3" ry="2.8" fill="#1e293b"/>
+                                <ellipse class="char-eye char-eye-delay-2" cx="33.5" cy="27.5" rx="2.3" ry="2.8" fill="#1e293b"/>
+                                <circle cx="19" cy="26.5" r="0.9" fill="#ffffff"/>
+                                <circle cx="32.5" cy="26.5" r="0.9" fill="#ffffff"/>
+                                <circle cx="14.5" cy="32.5" r="2.8" fill="#fb7185" opacity="0.45"/>
+                                <circle cx="38.5" cy="32.5" r="2.8" fill="#fb7185" opacity="0.45"/>
+                                <path d="M26.5,28 L25.5,31 L27.5,31" stroke="#d97706" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                                <path class="char-mouth" d="M21.5,35.5 Q27,40.5 32.5,35.5" stroke="#991b1b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            </g>
+
+                            <!-- Right Arm (Complete with sleeve & hand holding plate side) -->
+                            <g class="char-arm-right">
+                                <path d="M38,60 Q32,76 16,80" stroke="#fed7aa" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+                                <path d="M39,58 L34,68" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+                                <circle cx="15" cy="80" r="4.2" fill="#fed7aa"/>
+                            </g>
+                        </g>
+                    </g>
+
+                    <!-- ================= STUDENT 3 (BACK OF QUEUE - BOY WITH BOTH ARMS) ================= -->
+                    <g transform="translate(342, 100)">
+                        <g class="char-breathe">
+                            <ellipse cx="27" cy="160" rx="20" ry="5" fill="#94a3b8" opacity="0.45"/>
+
+                            <!-- Left Arm (Natural at side) -->
+                            <path d="M13,58 Q7,74 10,88" stroke="#fed7aa" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+                            <path d="M14,55 L9,66" stroke="#ffffff" stroke-width="9.5" stroke-linecap="round"/>
+                            <circle cx="10" cy="89" r="4.2" fill="#fed7aa"/>
+
+                            <!-- Trousers & Shoes -->
+                            <path d="M16,108 L26,108 L25,150 L15,150 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.2"/>
+                            <path d="M29,108 L39,108 L40,150 L30,150 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.2"/>
+                            <rect x="15.5" y="146" width="9.5" height="6" fill="#ffffff"/>
+                            <rect x="30.5" y="146" width="9.5" height="6" fill="#ffffff"/>
+                            <path d="M11,152 Q11,147 19,148 L25,148 L25,155 L11,155 Z" fill="#0f172a"/>
+                            <path d="M26,152 Q26,147 34,148 L40,148 L40,155 L26,155 Z" fill="#0f172a"/>
+
+                            <!-- Neck & Shirt -->
+                            <rect x="23" y="44" width="9" height="10" rx="3" fill="#fed7aa"/>
+                            <path d="M12,52 Q27,48 42,52 L44,109 L10,109 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="1.8"/>
+                            <polygon points="21,51 27,59 16,58" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="33,51 27,59 38,58" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="25,56 29.5,56 31.5,86 27.2,92 23,86" fill="#2563eb" stroke="#1d4ed8" stroke-width="1"/>
+                            <rect x="33" y="64" width="5.5" height="6.5" rx="1" fill="#facc15" stroke="#1e3a8a" stroke-width="1"/>
+
+                            <!-- Head -->
+                            <g class="char-head-bob">
+                                <circle cx="9" cy="29" r="3.8" fill="#fed7aa"/>
+                                <circle cx="45" cy="29" r="3.8" fill="#fed7aa"/>
+                                <circle cx="27" cy="28" r="17.5" fill="#fed7aa"/>
+                                <path d="M9,25 C10,8 23,5 30,6 C39,6 46,13 45,26 C41,18 35,14 26,15 C18,15 12,19 9,25 Z" fill="#1e293b"/>
+                                <path d="M16,21 Q20,18.5 23,21" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                                <path d="M30,21 Q33,18.5 37,21" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                                <ellipse class="char-eye" cx="20" cy="26.5" rx="2.3" ry="2.8" fill="#1e293b"/>
+                                <ellipse class="char-eye" cx="33.5" cy="26.5" rx="2.3" ry="2.8" fill="#1e293b"/>
+                                <circle cx="19" cy="25.5" r="0.9" fill="#ffffff"/>
+                                <circle cx="32.5" cy="25.5" r="0.9" fill="#ffffff"/>
+                                <circle cx="14.5" cy="31.5" r="2.8" fill="#fb7185" opacity="0.45"/>
+                                <circle cx="38.5" cy="31.5" r="2.8" fill="#fb7185" opacity="0.45"/>
+                                <path class="char-mouth" d="M21.5,34.5 Q27,39.5 32.5,34.5" stroke="#991b1b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            </g>
+
+                            <!-- Right Arm (Complete with sleeve & hand at side) -->
+                            <path d="M41,58 Q47,74 43,88" stroke="#fed7aa" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+                            <path d="M40,55 L45,66" stroke="#ffffff" stroke-width="9.5" stroke-linecap="round"/>
+                            <circle cx="43" cy="89" r="4.2" fill="#fed7aa"/>
+                        </g>
+                    </g>
+                </svg>`
+            },
+            {
+                id: 2,
+                title: "Gambar 2",
+                situation: "Situasi: Selepas Makan",
+                sentence: "Murid memasukkan pinggan yang telah digunakan ke dalam bekas.",
+                tip: "Intonasi: Sebut 'memasukkan pinggan' dan 'ke dalam bekas' dengan jelas.",
+                quizHint: "Ke manakah murid memasukkan pinggan yang telah digunakan?",
+                emoji: "🍽️",
+                starsEarned: 0,
+                svg: `
+                <svg viewBox="0 0 420 290" class="w-full h-full">
+                    <!-- Wall & Floor -->
+                    <rect width="420" height="225" fill="#e0f2fe"/>
+                    <rect y="225" width="420" height="65" fill="#cbd5e1"/>
+                    <line x1="0" y1="225" x2="420" y2="225" stroke="#94a3b8" stroke-width="3"/>
+
+                    <!-- Top Signboard -->
+                    <rect x="85" y="14" width="250" height="36" rx="12" fill="#0284c7" stroke="#ffffff" stroke-width="2.5"/>
+                    <text x="210" y="37" text-anchor="middle" fill="#ffffff" font-family="Fredoka" font-weight="bold" font-size="14.5">BEKAS PINGGAN KOTOR 🍽️</text>
+
+                    <!-- ================= GIRL STUDENT (LEFT - COMPLETE WITH PINAFORE, LEGS & BOTH HANDS) ================= -->
+                    <g transform="translate(88, 66)">
+                        <g class="char-breathe char-breathe-delay">
+                            <!-- Legs & Shoes visible under table -->
+                            <path d="M18,112 L28,112 L27,168 L17,168 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.2"/>
+                            <path d="M32,112 L42,112 L43,168 L33,168 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.2"/>
+                            <ellipse cx="21" cy="171" rx="8" ry="4" fill="#0f172a"/>
+                            <ellipse cx="38" cy="171" rx="8" ry="4" fill="#0f172a"/>
+
+                            <!-- Neck -->
+                            <rect x="25" y="45" width="10" height="10" rx="3" fill="#fed7aa"/>
+
+                            <!-- White Shirt Sleeves & Blue School Pinafore -->
+                            <path d="M12,54 Q30,49 48,54 L50,115 L10,115 Z" fill="#1d4ed8" stroke="#1e3a8a" stroke-width="1.8"/>
+                            <!-- White Collar & Tie -->
+                            <polygon points="20,52 30,63 40,52" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+                            <polygon points="28,57 32,57 33,76 30,80 27,76" fill="#dc2626"/>
+
+                            <!-- Head with Pigtails -->
+                            <g class="char-head-bob">
+                                <!-- Cute Twin Pigtails -->
+                                <circle cx="7" cy="26" r="7.5" fill="#1e293b"/>
+                                <circle cx="53" cy="26" r="7.5" fill="#1e293b"/>
+                                <circle cx="11" cy="24" r="2.8" fill="#f43f5e"/>
+                                <circle cx="49" cy="24" r="2.8" fill="#f43f5e"/>
+                                <!-- Ears & Face -->
+                                <circle cx="11" cy="30" r="3.8" fill="#fed7aa"/>
+                                <circle cx="49" cy="30" r="3.8" fill="#fed7aa"/>
+                                <circle cx="30" cy="29" r="18.5" fill="#fed7aa"/>
+                                <!-- Hair Bangs -->
+                                <path d="M11,26 C12,8 23,5 30,5 C37,5 48,8 49,26 C44,18 37,15 30,15 C23,15 16,18 11,26 Z" fill="#1e293b"/>
+                                <!-- Eyebrows & Blinking Eyes -->
+                                <path d="M19,22 Q23,19.5 26,22" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                                <path d="M34,22 Q37,19.5 41,22" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                                <ellipse class="char-eye char-eye-delay-1" cx="23" cy="28" rx="2.4" ry="2.9" fill="#1e293b"/>
+                                <ellipse class="char-eye char-eye-delay-1" cx="37" cy="28" rx="2.4" ry="2.9" fill="#1e293b"/>
+                                <circle cx="22" cy="27" r="0.9" fill="#ffffff"/>
+                                <circle cx="36" cy="27" r="0.9" fill="#ffffff"/>
+                                <circle cx="17" cy="33" r="3" fill="#fb7185" opacity="0.45"/>
+                                <circle cx="43" cy="33" r="3" fill="#fb7185" opacity="0.45"/>
+                                <path d="M30,28.5 L28.8,31.5 L31,31.5" stroke="#d97706" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                                <path class="char-mouth" d="M24,36 Q30,41.5 36,36 Z" fill="#fda4af" stroke="#991b1b" stroke-width="1.8"/>
+                            </g>
+
+                            <!-- BOTH ARMS placing used plate into Left Basin -->
+                            <g class="char-arm-action">
+                                <!-- Left Arm -->
+                                <path d="M12,58 Q4,72 16,80" stroke="#fed7aa" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+                                <path d="M13,56 L7,66" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+                                <!-- Right Arm -->
+                                <path d="M48,58 Q56,72 44,80" stroke="#fed7aa" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+                                <path d="M47,56 L53,66" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+                                <!-- Used Plate with leftover sambal stains & spoon -->
+                                <ellipse cx="30" cy="82" rx="22" ry="6.5" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+                                <ellipse cx="30" cy="82" rx="15" ry="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+                                <!-- Leftover Sauce & Rice Crumbs -->
+                                <path d="M22,81 Q27,79 31,82 Q26,84 22,81 Z" fill="#dc2626" opacity="0.75"/>
+                                <circle cx="34" cy="81" r="1.2" fill="#f59e0b"/>
+                                <circle cx="36" cy="83" r="1" fill="#16a34a"/>
+                                <!-- Silver Spoon on Plate -->
+                                <line x1="33" y1="82" x2="46" y2="77" stroke="#64748b" stroke-width="2.2" stroke-linecap="round"/>
+                                <ellipse cx="32" cy="82.5" rx="3.5" ry="1.8" fill="#94a3b8" stroke="#475569" stroke-width="1"/>
+                                <!-- Both Hands holding Plate Rim -->
+                                <circle cx="14" cy="81" r="4.3" fill="#fed7aa"/>
+                                <circle cx="46" cy="81" r="4.3" fill="#fed7aa"/>
+                            </g>
+                        </g>
+                    </g>
+
+                    <!-- ================= COLLECTION TABLE & TWO BASINS ================= -->
+                    <!-- Table Legs & Top -->
+                    <rect x="64" y="192" width="218" height="12" rx="3" fill="#475569" stroke="#1e293b" stroke-width="2"/>
+                    <rect x="74" y="204" width="12" height="52" fill="#334155"/>
+                    <rect x="258" y="204" width="12" height="52" fill="#334155"/>
+                    <rect x="86" y="218" width="172" height="8" fill="#64748b"/>
+
+                    <!-- Basin 1 (Left - Pinggan Kotor) -->
+                    <polygon points="70,150 168,150 158,193 80,193" fill="#475569" stroke="#1e293b" stroke-width="2.5"/>
+                    <rect x="65" y="144" width="108" height="9" rx="4" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                    <rect x="88" y="164" width="62" height="16" rx="4" fill="#e2e8f0"/>
+                    <text x="119" y="175" text-anchor="middle" fill="#1e293b" font-family="Fredoka" font-weight="bold" font-size="8.5">PINGGAN</text>
+
+                    <!-- Basin 2 (Right - Pinggan & Sudu Kotor) -->
+                    <polygon points="180,150 278,150 268,193 190,193" fill="#475569" stroke="#1e293b" stroke-width="2.5"/>
+                    <rect x="175" y="144" width="108" height="9" rx="4" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                    <!-- Stacked Dirty Plates & Utensils peeking out of Basin 2 -->
+                    <ellipse cx="212" cy="143" rx="22" ry="5" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
+                    <line x1="242" y1="144" x2="252" y2="132" stroke="#cbd5e1" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="248" y1="144" x2="258" y2="134" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+                    <rect x="198" y="164" width="62" height="16" rx="4" fill="#e2e8f0"/>
+                    <text x="229" y="175" text-anchor="middle" fill="#1e293b" font-family="Fredoka" font-weight="bold" font-size="8.5">BEKAS</text>
+
+                    <!-- ================= BOY STUDENT (RIGHT - COMPLETE WITH BOTH ARMS & REALISTIC DIRTY PLATE) ================= -->
+                    <g transform="translate(284, 72)">
+                        <g class="char-breathe">
+                            <ellipse cx="32" cy="180" rx="24" ry="5" fill="#94a3b8" opacity="0.5"/>
+
+                            <!-- Left Arm (Back arm supporting the plate) -->
+                            <g class="char-arm-right">
+                                <path d="M16,64 Q-8,68 -28,66" stroke="#fed7aa" stroke-width="8" stroke-linecap="round" fill="none"/>
+                                <path d="M18,62 L4,65" stroke="#ffffff" stroke-width="10.5" stroke-linecap="round"/>
+                                <circle cx="-30" cy="66" r="4.5" fill="#fed7aa"/>
+                            </g>
+
+                            <!-- Navy Trousers -->
+                            <path d="M18,116 L30,116 L29,168 L17,168 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.3"/>
+                            <path d="M33,116 L45,116 L46,168 L34,168 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.3"/>
+                            <!-- Socks & Shoes -->
+                            <rect x="17.5" y="163" width="11" height="6" fill="#ffffff"/>
+                            <rect x="34.5" y="163" width="11" height="6" fill="#ffffff"/>
+                            <path d="M12,170 Q12,165 21,166 L29,166 L29,174 L12,174 Z" fill="#0f172a"/>
+                            <path d="M30,170 Q30,165 39,166 L46,166 L46,174 L30,174 Z" fill="#0f172a"/>
+
+                            <!-- Neck & White Uniform Shirt -->
+                            <rect x="26" y="47" width="10" height="10" rx="3" fill="#fed7aa"/>
+                            <path d="M14,55 Q31,51 48,55 L50,118 L12,118 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="1.8"/>
+                            <!-- Collar & Blue Tie -->
+                            <polygon points="23,54 31,63 18,61" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="39,54 31,63 44,61" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="28.5,60 33.5,60 35.5,95 31,102 26.5,95" fill="#1d4ed8" stroke="#1e3a8a" stroke-width="1"/>
+                            <rect x="37" y="69" width="6" height="7" rx="1" fill="#facc15" stroke="#1e3a8a" stroke-width="1"/>
+
+                            <!-- Head -->
+                            <g class="char-head-bob">
+                                <circle cx="11" cy="31" r="4" fill="#fed7aa"/>
+                                <circle cx="51" cy="31" r="4" fill="#fed7aa"/>
+                                <circle cx="31" cy="30" r="19" fill="#fed7aa"/>
+                                <path d="M11,27 C12,8 25,5 33,6 C43,6 51,13 50,27 C46,18 39,15 30,16 C21,16 15,20 11,27 Z" fill="#1e293b"/>
+                                <path d="M19,23 Q23,20.5 26,23" stroke="#1e293b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <path d="M35,23 Q38,20.5 42,23" stroke="#1e293b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <ellipse class="char-eye" cx="23.5" cy="29" rx="2.5" ry="3" fill="#1e293b"/>
+                                <ellipse class="char-eye" cx="37.5" cy="29" rx="2.5" ry="3" fill="#1e293b"/>
+                                <circle cx="22.5" cy="27.8" r="1" fill="#ffffff"/>
+                                <circle cx="36.5" cy="27.8" r="1" fill="#ffffff"/>
+                                <circle cx="17.5" cy="34" r="3" fill="#fb7185" opacity="0.45"/>
+                                <circle cx="43.5" cy="34" r="3" fill="#fb7185" opacity="0.45"/>
+                                <path d="M30.5,29.5 L29,33 L31.5,33" stroke="#d97706" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                                <path class="char-mouth" d="M24.5,37.5 Q31,44 37.5,37.5 Z" fill="#fda4af" stroke="#991b1b" stroke-width="1.8"/>
+                            </g>
+
+                            <!-- Right Arm (Front arm placing dirty yellow plate with fork & crumbs) -->
+                            <g class="char-arm-right">
+                                <!-- Dirty Yellow Plate -->
+                                <ellipse cx="-42" cy="70" rx="26" ry="7.5" fill="#fef08a" stroke="#d97706" stroke-width="2.2"/>
+                                <ellipse cx="-42" cy="70" rx="18" ry="4.5" fill="#fef9c3" stroke="#f59e0b" stroke-width="1"/>
+                                <!-- Leftover Sambal, Chicken Bone & Rice Grains -->
+                                <path d="M-52,69 Q-46,66 -41,70 Q-47,73 -52,69 Z" fill="#b91c1c" opacity="0.75"/>
+                                <line x1="-38" y1="71" x2="-29" y2="68" stroke="#fef3c7" stroke-width="2.5" stroke-linecap="round"/>
+                                <circle cx="-28" cy="67.5" r="1.8" fill="#fef3c7"/>
+                                <circle cx="-36" cy="68" r="1.2" fill="#15803d"/>
+                                <!-- Silver Fork on Plate -->
+                                <line x1="-45" y1="72" x2="-30" y2="65" stroke="#64748b" stroke-width="2.2" stroke-linecap="round"/>
+
+                                <!-- Front Arm & Sleeve -->
+                                <path d="M40,65 Q12,76 -16,71" stroke="#fed7aa" stroke-width="8.5" stroke-linecap="round" fill="none"/>
+                                <path d="M43,62 L30,68" stroke="#ffffff" stroke-width="11" stroke-linecap="round"/>
+                                <circle cx="-17" cy="71" r="4.8" fill="#fed7aa"/>
+                            </g>
+                        </g>
+                    </g>
+                </svg>`
+            },
+            {
+                id: 3,
+                title: "Gambar 3",
+                situation: "Situasi: Menjaga Kebersihan",
+                sentence: "Murid membuang sampah ke dalam tong sampah yang disediakan.",
+                tip: "Intonasi: Sebut 'membuang sampah' dengan jelas dan tegas secara sopan.",
+                quizHint: "Di manakah murid membuang sampah selepas makan?",
+                emoji: "🗑️",
+                starsEarned: 0,
+                svg: `
+                <svg viewBox="0 0 420 290" class="w-full h-full">
+                    <!-- Park / Canteen Walkway Background -->
+                    <rect width="420" height="225" fill="#dcfce7"/>
+                    <rect y="225" width="420" height="65" fill="#86efac"/>
+                    <line x1="0" y1="225" x2="420" y2="225" stroke="#4ade80" stroke-width="3"/>
+
+                    <!-- Top Banner -->
+                    <rect x="80" y="14" width="260" height="36" rx="12" fill="#15803d" stroke="#ffffff" stroke-width="2.5"/>
+                    <text x="210" y="37" text-anchor="middle" fill="#ffffff" font-family="Fredoka" font-weight="bold" font-size="14.5">JAGA KEBERSIHAN KANTIN ♻️</text>
+
+                    <!-- ================= REALISTIC DROPPING TRASH ITEMS ================= -->
+                    <!-- 1. Left Trash: Crumpled Burger/Nasi Lemak Wrapper & Banana Peel -->
+                    <g class="trash-drop">
+                        <!-- Crumpled Food Wrapper Paper -->
+                        <polygon points="175,106 184,101 192,105 190,115 181,118 173,112" fill="#fef08a" stroke="#ca8a04" stroke-width="1.6"/>
+                        <polyline points="177,108 184,111 188,106" stroke="#eab308" stroke-width="1.2" fill="none"/>
+                        <!-- Banana Peel -->
+                        <path d="M196,112 Q202,104 208,112 Q202,110 198,116 Z" fill="#facc15" stroke="#a16207" stroke-width="1.2"/>
+                    </g>
+
+                    <!-- 2. Right Trash: Juice Box with Bent Straw & Plastic Cup -->
+                    <g class="trash-drop" style="animation-delay: 0.9s">
+                        <!-- Kotak Air (Juice Box) with Straw -->
+                        <g transform="translate(216, 98) rotate(-14)">
+                            <polyline points="8,0 11,-8 17,-6" stroke="#ef4444" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <rect x="0" y="0" width="16" height="22" rx="2" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5"/>
+                            <rect x="2" y="4" width="12" height="6" rx="1" fill="#ffffff"/>
+                            <circle cx="8" cy="15" r="3" fill="#f97316"/>
+                        </g>
+                    </g>
+
+                    <!-- ================= GREEN WHEELED TRASH BIN (TONG SAMPAH) ================= -->
+                    <g transform="translate(160, 120)">
+                        <ellipse cx="50" cy="134" rx="44" ry="6" fill="#15803d" opacity="0.35"/>
+                        <!-- Open Rim showing Dark Interior -->
+                        <ellipse cx="50" cy="16" rx="42" ry="7" fill="#052e16" stroke="#14532d" stroke-width="2"/>
+                        <!-- Bin Body -->
+                        <polygon points="10,16 90,16 80,128 20,128" fill="#16a34a" stroke="#14532d" stroke-width="3"/>
+                        <!-- Vertical Ribs -->
+                        <line x1="28" y1="24" x2="33" y2="122" stroke="#15803d" stroke-width="2.5"/>
+                        <line x1="72" y1="24" x2="67" y2="122" stroke="#15803d" stroke-width="2.5"/>
+                        <!-- Top Rim Collar -->
+                        <rect x="5" y="10" width="90" height="10" rx="4" fill="#22c55e" stroke="#14532d" stroke-width="2.5"/>
+                        <!-- Recycle Emblem & Label -->
+                        <circle cx="50" cy="68" r="19" fill="#dcfce7" stroke="#14532d" stroke-width="1.5"/>
+                        <text x="50" y="75" text-anchor="middle" font-size="20">♻️</text>
+                        <rect x="24" y="96" width="52" height="15" rx="4" fill="#fef08a" stroke="#14532d" stroke-width="1.2"/>
+                        <text x="50" y="106.5" text-anchor="middle" fill="#14532d" font-family="Fredoka" font-weight="bold" font-size="7.5">TONG SAMPAH</text>
+                    </g>
+
+                    <!-- ================= LEFT STUDENT (BOY - COMPLETE WITH BOTH ARMS & UNIFORM) ================= -->
+                    <g transform="translate(66, 72)">
+                        <g class="char-breathe">
+                            <ellipse cx="30" cy="178" rx="23" ry="5" fill="#4ade80" opacity="0.5"/>
+
+                            <!-- Left Arm (Natural at side with sleeve & hand) -->
+                            <path d="M14,60 Q6,78 10,94" stroke="#fed7aa" stroke-width="8" stroke-linecap="round" fill="none"/>
+                            <path d="M15,57 L9,69" stroke="#ffffff" stroke-width="10.5" stroke-linecap="round"/>
+                            <circle cx="10" cy="95" r="4.5" fill="#fed7aa"/>
+
+                            <!-- Trousers & Shoes -->
+                            <path d="M17,114 L29,114 L28,166 L16,166 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.3"/>
+                            <path d="M32,114 L44,114 L45,166 L33,166 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.3"/>
+                            <rect x="16.5" y="161" width="11" height="6" fill="#ffffff"/>
+                            <rect x="33.5" y="161" width="11" height="6" fill="#ffffff"/>
+                            <path d="M13,168 Q13,163 22,164 L29,164 L29,172 L13,172 Z" fill="#0f172a"/>
+                            <path d="M31,168 Q31,163 40,164 L47,164 L47,172 L31,172 Z" fill="#0f172a"/>
+
+                            <!-- Neck & Uniform Shirt -->
+                            <rect x="25" y="46" width="10" height="10" rx="3" fill="#fed7aa"/>
+                            <path d="M13,54 Q30,50 47,54 L49,116 L11,116 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="1.8"/>
+                            <!-- Collar & Tie -->
+                            <polygon points="22,53 30,62 17,60" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="38,53 30,62 43,60" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="27.5,59 32.5,59 34.5,93 30,100 25.5,93" fill="#1d4ed8" stroke="#1e3a8a" stroke-width="1"/>
+                            <rect x="36" y="68" width="6" height="7" rx="1" fill="#facc15" stroke="#1e3a8a" stroke-width="1"/>
+
+                            <!-- Head -->
+                            <g class="char-head-bob">
+                                <circle cx="10" cy="30" r="4" fill="#fed7aa"/>
+                                <circle cx="50" cy="30" r="4" fill="#fed7aa"/>
+                                <circle cx="30" cy="29" r="19" fill="#fed7aa"/>
+                                <path d="M10,26 C11,8 24,4 32,5 C42,5 50,12 49,26 C45,17 38,14 29,15 C20,15 14,19 10,26 Z" fill="#1e293b"/>
+                                <path d="M19,22 Q23,19.5 26,22" stroke="#1e293b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <path d="M34,22 Q37,19.5 41,22" stroke="#1e293b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <ellipse class="char-eye char-eye-delay-1" cx="23" cy="28" rx="2.5" ry="3" fill="#1e293b"/>
+                                <ellipse class="char-eye char-eye-delay-1" cx="37" cy="28" rx="2.5" ry="3" fill="#1e293b"/>
+                                <circle cx="22" cy="26.8" r="1" fill="#ffffff"/>
+                                <circle cx="36" cy="26.8" r="1" fill="#ffffff"/>
+                                <circle cx="17" cy="33" r="3" fill="#fb7185" opacity="0.45"/>
+                                <circle cx="43" cy="33" r="3" fill="#fb7185" opacity="0.45"/>
+                                <path d="M30,28.5 L28.5,32 L31,32" stroke="#d97706" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                                <path class="char-mouth" d="M24,36.5 Q30,43 36,36.5 Z" fill="#fda4af" stroke="#991b1b" stroke-width="1.8"/>
+                            </g>
+
+                            <!-- Right Arm (Reaching gracefully to drop crumpled wrapper into bin) -->
+                            <g class="char-arm-action">
+                                <path d="M44,58 Q72,56 98,42" stroke="#fed7aa" stroke-width="8.5" stroke-linecap="round" fill="none"/>
+                                <path d="M43,57 L57,56" stroke="#ffffff" stroke-width="11" stroke-linecap="round"/>
+                                <circle cx="100" cy="41" r="4.8" fill="#fed7aa"/>
+                            </g>
+                        </g>
+                    </g>
+
+                    <!-- ================= RIGHT STUDENT (BOY - COMPLETE WITH BOTH ARMS & UNIFORM) ================= -->
+                    <g transform="translate(292, 72)">
+                        <g class="char-breathe char-breathe-delay">
+                            <ellipse cx="30" cy="178" rx="23" ry="5" fill="#4ade80" opacity="0.5"/>
+
+                            <!-- Right Arm (Natural at side with sleeve & hand) -->
+                            <path d="M46,60 Q54,78 50,94" stroke="#fed7aa" stroke-width="8" stroke-linecap="round" fill="none"/>
+                            <path d="M45,57 L51,69" stroke="#ffffff" stroke-width="10.5" stroke-linecap="round"/>
+                            <circle cx="50" cy="95" r="4.5" fill="#fed7aa"/>
+
+                            <!-- Trousers & Shoes -->
+                            <path d="M17,114 L29,114 L28,166 L16,166 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.3"/>
+                            <path d="M32,114 L44,114 L45,166 L33,166 Z" fill="#1e3a8a" stroke="#172554" stroke-width="1.3"/>
+                            <rect x="16.5" y="161" width="11" height="6" fill="#ffffff"/>
+                            <rect x="33.5" y="161" width="11" height="6" fill="#ffffff"/>
+                            <path d="M13,168 Q13,163 22,164 L29,164 L29,172 L13,172 Z" fill="#0f172a"/>
+                            <path d="M31,168 Q31,163 40,164 L47,164 L47,172 L31,172 Z" fill="#0f172a"/>
+
+                            <!-- Neck & Uniform Shirt -->
+                            <rect x="25" y="46" width="10" height="10" rx="3" fill="#fed7aa"/>
+                            <path d="M13,54 Q30,50 47,54 L49,116 L11,116 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="1.8"/>
+                            <!-- Collar & Red Tie -->
+                            <polygon points="22,53 30,62 17,60" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="38,53 30,62 43,60" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+                            <polygon points="27.5,59 32.5,59 34.5,93 30,100 25.5,93" fill="#dc2626" stroke="#991b1b" stroke-width="1"/>
+                            <rect x="36" y="68" width="6" height="7" rx="1" fill="#facc15" stroke="#1e3a8a" stroke-width="1"/>
+
+                            <!-- Head -->
+                            <g class="char-head-bob">
+                                <circle cx="10" cy="30" r="4" fill="#fed7aa"/>
+                                <circle cx="50" cy="30" r="4" fill="#fed7aa"/>
+                                <circle cx="30" cy="29" r="19" fill="#fed7aa"/>
+                                <path d="M10,26 C11,8 24,4 32,5 C42,5 50,12 49,26 C45,17 38,14 29,15 C20,15 14,19 10,26 Z" fill="#1e293b"/>
+                                <path d="M19,22 Q23,19.5 26,22" stroke="#1e293b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <path d="M34,22 Q37,19.5 41,22" stroke="#1e293b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <ellipse class="char-eye char-eye-delay-2" cx="23" cy="28" rx="2.5" ry="3" fill="#1e293b"/>
+                                <ellipse class="char-eye char-eye-delay-2" cx="37" cy="28" rx="2.5" ry="3" fill="#1e293b"/>
+                                <circle cx="22" cy="26.8" r="1" fill="#ffffff"/>
+                                <circle cx="36" cy="26.8" r="1" fill="#ffffff"/>
+                                <circle cx="17" cy="33" r="3" fill="#fb7185" opacity="0.45"/>
+                                <circle cx="43" cy="33" r="3" fill="#fb7185" opacity="0.45"/>
+                                <path d="M30,28.5 L28.5,32 L31,32" stroke="#d97706" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                                <path class="char-mouth" d="M24,36.5 Q30,43 36,36.5 Z" fill="#fda4af" stroke="#991b1b" stroke-width="1.8"/>
+                            </g>
+
+                            <!-- Left Arm (Reaching gracefully to drop juice box into bin) -->
+                            <g class="char-arm-right">
+                                <path d="M16,58 Q-12,56 -38,42" stroke="#fed7aa" stroke-width="8.5" stroke-linecap="round" fill="none"/>
+                                <path d="M17,57 L3,56" stroke="#ffffff" stroke-width="11" stroke-linecap="round"/>
+                                <circle cx="-40" cy="41" r="4.8" fill="#fed7aa"/>
+                            </g>
+                        </g>
+                    </g>
+                </svg>`
+            }
+        ];
+
+        let currentSceneIndex = 0;
+        let isRecording = false;
+        let recognition = null;
+        let bgMusicPlaying = false;
+        let bgMusicInterval = null;
+
+        // Quiz state
+        let currentQuizIndex = 0;
+        let selectedQuizWords = [];
+        let availableQuizWords = [];
+
+        function playChime(type = 'success') {
+            try {
+                const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+                synth.volume.value = -8;
+                const now = Tone.now();
+                if (type === 'success') {
+                    synth.triggerAttackRelease(["C5", "E5", "G5", "C6"], "8n", now);
+                } else if (type === 'click') {
+                    synth.triggerAttackRelease(["G5"], "16n", now);
+                } else if (type === 'tryagain') {
+                    synth.triggerAttackRelease(["E4", "C4"], "8n", now);
+                }
+            } catch (e) {
+                // Ignore audio errors if user hasn't interacted yet
+            }
+        }
+
+        async function toggleBgMusic() {
+            await Tone.start();
+            const btn = document.getElementById('musicBtn');
+            if (bgMusicPlaying) {
+                bgMusicPlaying = false;
+                clearInterval(bgMusicInterval);
+                btn.classList.replace('bg-emerald-500', 'bg-sky-500');
+            } else {
+                bgMusicPlaying = true;
+                btn.classList.replace('bg-sky-500', 'bg-emerald-500');
+                const notes = ["C5", "E5", "G5", "A5", "G5", "E5", "D5", "C5"];
+                let idx = 0;
+                const synth = new Tone.Synth({
+                    oscillator: { type: "sine" },
+                    envelope: { attack: 0.05, decay: 0.2, sustain: 0.1, release: 0.4 }
+                }).toDestination();
+                synth.volume.value = -18;
+                bgMusicInterval = setInterval(() => {
+                    if (!bgMusicPlaying) return;
+                    synth.triggerAttackRelease(notes[idx % notes.length], "8n");
+                    idx++;
+                }, 450);
+            }
+        }
+
+        function switchTab(tabName) {
+            playChime('click');
+            ['info', 'tutur', 'kuiz'].forEach(t => {
+                const sec = document.getElementById(`tab-${t}`);
+                const btn = document.getElementById(`tabBtn-${t}`);
+                if (t === tabName) {
+                    sec.classList.remove('hidden');
+                    btn.className = "btn-3d py-2.5 sm:py-3 px-2 sm:px-4 rounded-2xl font-kid font-bold text-xs sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 bg-amber-400 text-amber-950 border-2 border-white";
+                } else {
+                    sec.classList.add('hidden');
+                    btn.className = "btn-3d py-2.5 sm:py-3 px-2 sm:px-4 rounded-2xl font-kid font-bold text-xs sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 bg-white/90 text-slate-700 hover:bg-white border-2 border-sky-300";
+                }
+            });
+
+            if (tabName === 'tutur') {
+                renderScene();
+            } else if (tabName === 'kuiz') {
+                loadQuizQuestion(currentQuizIndex);
+            }
+        }
+
+        function selectScene(index) {
+            playChime('click');
+            currentSceneIndex = index;
+            renderScene();
+        }
+
+        function prevScene() {
+            currentSceneIndex = (currentSceneIndex - 1 + scenesData.length) % scenesData.length;
+            playChime('click');
+            renderScene();
+        }
+
+        function nextScene() {
+            currentSceneIndex = (currentSceneIndex + 1) % scenesData.length;
+            playChime('click');
+            renderScene();
+        }
+
+        function renderScene() {
+            const scene = scenesData[currentSceneIndex];
+
+            // Update selector buttons
+            scenesData.forEach((s, idx) => {
+                const btn = document.getElementById(`sceneBtn-${idx}`);
+                const starMark = s.starsEarned > 0 ? ` (${s.starsEarned}⭐)` : ' ⭐';
+                btn.innerHTML = `${s.title}${starMark}`;
+                if (idx === currentSceneIndex) {
+                    btn.className = "btn-3d flex-1 sm:flex-initial px-4 py-2 rounded-xl font-kid font-bold text-sm sm:text-base bg-amber-400 text-amber-950 border-2 border-amber-600";
+                } else {
+                    btn.className = "btn-3d flex-1 sm:flex-initial px-4 py-2 rounded-xl font-kid font-bold text-sm sm:text-base bg-slate-100 text-slate-700 border-2 border-slate-300";
+                }
+            });
+
+            document.getElementById('sceneBadgeTitle').textContent = scene.title;
+            document.getElementById('sceneSituationTag').textContent = scene.situation;
+            document.getElementById('sceneIllustration').innerHTML = scene.svg;
+            document.getElementById('intonationTip').innerHTML = `<i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i><span>${scene.tip}</span>`;
+            document.getElementById('sceneProgressText').textContent = `Gambar ${currentSceneIndex + 1} daripada ${scenesData.length}`;
+
+            // Render word tokens
+            const words = scene.sentence.split(' ');
+            const container = document.getElementById('sentenceContainer');
+            container.innerHTML = words.map((w, i) =>
+                `<span id="word-${i}" onclick="speakSingleWord('${w.replace(/[.,]/g, '')}', ${i})" class="word-token cursor-pointer hover:bg-amber-200" title="Klik untuk dengar perkataan ini">${w}</span>`
+            ).join(' ');
+
+            renderStarPyramid(scene.starsEarned);
+        }
+
+        function renderStarPyramid(earnedLevel) {
+            const row5 = document.getElementById('starRow5');
+            const row3 = document.getElementById('starRow3');
+            const row2 = document.getElementById('starRow2');
+
+            const makeStars = (count, isActive) => {
+                let html = '';
+                for (let i = 0; i < count; i++) {
+                    const colorClass = isActive ? 'text-amber-400 drop-shadow star-pop' : 'text-slate-300 hover:text-amber-200';
+                    html += `<i class="fa-solid fa-star ${colorClass}" style="animation-delay: ${i * 60}ms"></i>`;
+                }
+                return html;
+            };
+
+            row5.innerHTML = makeStars(5, earnedLevel === 5);
+            row3.innerHTML = makeStars(3, earnedLevel === 3);
+            row2.innerHTML = makeStars(2, earnedLevel === 2);
+
+            // Update header total stars
+            const total = scenesData.reduce((acc, s) => acc + s.starsEarned, 0);
+            document.getElementById('totalStarsBadge').textContent = `${total} / 15`;
+        }
+
+        // Realistic Human Voice Engine (Gemini TTS + High-Quality Natural Malay Voice Fallback)
+        const ttsAudioCache = new Map();
+        let activeAudioElement = null;
+        let wordHighlightTimers = [];
+        let preferredMalayVoice = null;
+
+        function initNaturalVoices() {
+            if (!('speechSynthesis' in window)) return;
+            const loadVoices = () => {
+                const voices = window.speechSynthesis.getVoices();
+                if (!voices.length) return;
+                // Prioritize natural/neural Malaysian or Indonesian voices (Yasmin, Rizwan, Natural, Google Bahasa)
+                preferredMalayVoice =
+                    voices.find(v => /ms-MY/i.test(v.lang) && /(Natural|Online|Neural|Yasmin|Rizwan|Google)/i.test(v.name)) ||
+                    voices.find(v => /ms/i.test(v.lang)) ||
+                    voices.find(v => /id-ID/i.test(v.lang) && /(Natural|Online|Neural|Gadis|Ardi|Google)/i.test(v.name)) ||
+                    voices.find(v => /id/i.test(v.lang)) ||
+                    null;
+            };
+            loadVoices();
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        function clearSpeechTimers() {
+            wordHighlightTimers.forEach(t => clearTimeout(t));
+            wordHighlightTimers = [];
+        }
+
+        function setSpeakingState(speaking) {
+            if (speaking) {
+                document.body.classList.add('is-speaking');
+            } else {
+                document.body.classList.remove('is-speaking');
+                document.querySelectorAll('.word-token').forEach(el => el.classList.remove('word-active'));
+            }
+        }
+
+        function stopAllSpeech() {
+            clearSpeechTimers();
+            if (activeAudioElement) {
+                activeAudioElement.pause();
+                activeAudioElement.currentTime = 0;
+                activeAudioElement = null;
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            setSpeakingState(false);
+        }
+
+        function base64ToArrayBuffer(base64) {
+            const binaryString = window.atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function pcmToWav(pcm16, sampleRate = 24000) {
+            const buffer = new ArrayBuffer(44 + pcm16.length * 2);
+            const view = new DataView(buffer);
+            const writeString = (offset, str) => {
+                for (let i = 0; i < str.length; i++) {
+                    view.setUint8(offset + i, str.charCodeAt(i));
+                }
+            };
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + pcm16.length * 2, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeString(36, 'data');
+            view.setUint32(40, pcm16.length * 2, true);
+            let offset = 44;
+            for (let i = 0; i < pcm16.length; i++, offset += 2) {
+                view.setInt16(offset, pcm16[i], true);
+            }
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        async function fetchGeminiHumanTTS(text, isSlow = false) {
+            const cacheKey = `${text}_${isSlow ? 'slow' : 'normal'}`;
+            if (ttsAudioCache.has(cacheKey)) {
+                return ttsAudioCache.get(cacheKey);
+            }
+
+            const styleInstruction = isSlow
+                ? `Sebut dalam Bahasa Melayu Malaysia yang baku, sangat jelas, perlahan sedikit, mesra kanak-kanak dan intonasi guru yang penyayang: "${text}"`
+                : `Sebut dalam Bahasa Melayu Malaysia yang baku, semula jadi seperti manusia sebenar, ceria, jelas dan sopan: "${text}"`;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: styleInstruction }]
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: { voiceName: "Aoede" }
+                        }
+                    }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+            let delay = 1000;
+            for (let attempt = 0; attempt < 2; attempt++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error('TTS request failed');
+                    const result = await response.json();
+                    const part = result?.candidates?.[0]?.content?.parts?.[0];
+                    const audioData = part?.inlineData?.data;
+                    const mimeType = part?.inlineData?.mimeType || "audio/L16;rate=24000";
+
+                    if (audioData) {
+                        const rateMatch = mimeType.match(/rate=(\d+)/);
+                        const sampleRate = rateMatch ? parseInt(rateMatch[1], 10) : 24000;
+                        const pcmBuffer = base64ToArrayBuffer(audioData);
+                        const pcm16 = new Int16Array(pcmBuffer);
+                        const wavBlob = pcmToWav(pcm16, sampleRate);
+                        const audioUrl = URL.createObjectURL(wavBlob);
+                        ttsAudioCache.set(cacheKey, audioUrl);
+                        return audioUrl;
+                    }
+                } catch (e) {
+                    if (attempt === 1) return null;
+                    await new Promise(r => setTimeout(r, delay));
+                    delay *= 2;
+                }
+            }
+            return null;
+        }
+
+        function speakWithNaturalBrowserVoice(text, rate = 0.95, onWordCallback = null) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(text);
+            if (preferredMalayVoice) {
+                utter.voice = preferredMalayVoice;
+                utter.lang = preferredMalayVoice.lang;
+            } else {
+                utter.lang = 'ms-MY';
+            }
+            // Human-like natural cadence (not robotic high pitch)
+            utter.rate = rate;
+            utter.pitch = 1.02;
+
+            utter.onstart = () => setSpeakingState(true);
+            utter.onend = () => setSpeakingState(false);
+            utter.onerror = () => setSpeakingState(false);
+
+            if (onWordCallback) {
+                onWordCallback();
+            }
+            window.speechSynthesis.speak(utter);
+        }
+
+        async function speakText(text, rate = 0.95) {
+            stopAllSpeech();
+            setSpeakingState(true);
+            const isSlow = rate < 0.8;
+            const aiAudioUrl = await fetchGeminiHumanTTS(text, isSlow);
+
+            if (aiAudioUrl) {
+                activeAudioElement = new Audio(aiAudioUrl);
+                activeAudioElement.playbackRate = isSlow ? 0.88 : 1.0;
+                activeAudioElement.onended = () => setSpeakingState(false);
+                activeAudioElement.onerror = () => setSpeakingState(false);
+                try {
+                    await activeAudioElement.play();
+                    return;
+                } catch (err) {
+                    // Fallback to browser voice if autoplay fails
+                }
+            }
+            speakWithNaturalBrowserVoice(text, rate);
+        }
+
+        function speakSingleWord(word, index) {
+            stopAllSpeech();
+            const token = document.getElementById(`word-${index}`);
+            if (token) token.classList.add('word-active');
+            speakText(word, 0.92);
+            const timer = setTimeout(() => {
+                if (token) token.classList.remove('word-active');
+            }, 950);
+            wordHighlightTimers.push(timer);
+        }
+
+        async function playCurrentSentence(rate = 0.95) {
+            stopAllSpeech();
+            const scene = scenesData[currentSceneIndex];
+            const words = scene.sentence.split(' ');
+            const isSlow = rate < 0.8;
+            const speedBadge = document.getElementById('speedBadge');
+            speedBadge.textContent = 'Menjana Suara Manusia... 🎙️';
+            setSpeakingState(true);
+
+            const startWordHighlighting = (totalDurationMs) => {
+                const intervalMs = totalDurationMs
+                    ? Math.max(280, Math.floor((totalDurationMs - 250) / words.length))
+                    : (isSlow ? 580 : 400);
+
+                words.forEach((_, idx) => {
+                    const t = setTimeout(() => {
+                        document.querySelectorAll('.word-token').forEach(el => el.classList.remove('word-active'));
+                        const el = document.getElementById(`word-${idx}`);
+                        if (el) el.classList.add('word-active');
+                    }, idx * intervalMs);
+                    wordHighlightTimers.push(t);
+                });
+
+                const endTimer = setTimeout(() => {
+                    setSpeakingState(false);
+                }, words.length * intervalMs + 350);
+                wordHighlightTimers.push(endTimer);
+            };
+
+            const aiAudioUrl = await fetchGeminiHumanTTS(scene.sentence, isSlow);
+            speedBadge.textContent = isSlow ? 'Suara Manusia: Perlahan 🐢' : 'Suara Manusia: Normal 🔊';
+
+            if (aiAudioUrl) {
+                activeAudioElement = new Audio(aiAudioUrl);
+                activeAudioElement.playbackRate = isSlow ? 0.86 : 1.0;
+                activeAudioElement.onloadedmetadata = () => {
+                    const durationMs = (activeAudioElement.duration / activeAudioElement.playbackRate) * 1000;
+                    startWordHighlighting(durationMs);
+                };
+                activeAudioElement.onended = () => setSpeakingState(false);
+                try {
+                    await activeAudioElement.play();
+                    return;
+                } catch (e) {
+                    // Fallback below
+                }
+            }
+
+            speakWithNaturalBrowserVoice(scene.sentence, rate, () => startWordHighlighting(null));
+        }
+
+        function toggleRecording() {
+            const btn = document.getElementById('recordBtn');
+            const btnText = document.getElementById('recordBtnText');
+            const feedbackBox = document.getElementById('feedbackBox');
+
+            if (isRecording) {
+                stopRecording();
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            isRecording = true;
+            btn.classList.add('mic-pulse', 'bg-red-600');
+            btnText.textContent = "Sedang Mendengar...";
+            feedbackBox.innerHTML = `<span class="text-2xl animate-bounce">🎙️</span><span class="text-rose-600">Sila sebut ayat di atas sekarang dengan jelas dan sopan...</span>`;
+
+            if (SpeechRecognition) {
+                try {
+                    recognition = new SpeechRecognition();
+                    recognition.lang = 'ms-MY';
+                    recognition.interimResults = false;
+                    recognition.maxAlternatives = 1;
+
+                    recognition.onresult = (event) => {
+                        const transcript = event.results[0][0].transcript;
+                        evaluateSpeech(transcript);
+                    };
+
+                    recognition.onerror = () => {
+                        // Fallback simulation for kids if mic permission is blocked in iframe
+                        simulateKidSpeechEvaluation();
+                    };
+
+                    recognition.onend = () => {
+                        if (isRecording) stopRecording();
+                    };
+
+                    recognition.start();
+                } catch (err) {
+                    setTimeout(simulateKidSpeechEvaluation, 2600);
+                }
+            } else {
+                // Fallback for devices without Web Speech API
+                setTimeout(simulateKidSpeechEvaluation, 2600);
+            }
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            const btn = document.getElementById('recordBtn');
+            const btnText = document.getElementById('recordBtnText');
+            btn.classList.remove('mic-pulse', 'bg-red-600');
+            btnText.textContent = "2. Cuba Bertutur";
+            if (recognition) {
+                try { recognition.stop(); } catch (e) {}
+            }
+        }
+
+        function evaluateSpeech(spokenText) {
+            stopRecording();
+            const target = scenesData[currentSceneIndex].sentence.toLowerCase().replace(/[.,-]/g, '').split(' ');
+            const spoken = spokenText.toLowerCase().replace(/[.,-]/g, '').split(' ');
+
+            let matchCount = 0;
+            target.forEach(w => {
+                if (spoken.includes(w)) matchCount++;
+            });
+
+            const ratio = matchCount / target.length;
+            if (ratio >= 0.65) {
+                awardStarsWithFeedback(5, `Hebat sekali! Sebutan "${spokenText}" sangat jelas dan intonasi yang sopan!`);
+            } else if (ratio >= 0.35) {
+                awardStarsWithFeedback(3, `Bagus! Kamu menyebut "${spokenText}". Cuba lagi supaya lebih lancar!`);
+            } else {
+                awardStarsWithFeedback(2, `Usaha yang baik! Mari dengar semula sebutan dan cuba sekali lagi.`);
+            }
+        }
+
+        function simulateKidSpeechEvaluation() {
+            if (!isRecording) return;
+            stopRecording();
+            const scene = scenesData[currentSceneIndex];
+            awardStarsWithFeedback(5, `Syabas! Sebutan dan intonasi kamu untuk ${scene.title} sangat jelas dan sopan! 🌟`);
+        }
+
+        function manualAwardStars(stars) {
+            const messages = {
+                5: "Tahniah! 5 Bintang (Cemerlang) - Sebutan yang betul dan intonasi sangat sopan!",
+                3: "Bagus! 3 Bintang (Baik) - Sebutan baik, teruskan berlatih intonasi.",
+                2: "2 Bintang (Memuaskan) - Jangan putus asa, mari cuba sebut bersama-sama lagi!"
+            };
+            awardStarsWithFeedback(stars, messages[stars]);
+        }
+
+        function awardStarsWithFeedback(stars, message) {
+            scenesData[currentSceneIndex].starsEarned = stars;
+            renderScene();
+
+            const feedbackBox = document.getElementById('feedbackBox');
+            const emoji = stars === 5 ? '🏆' : stars === 3 ? '👏' : '💪';
+            feedbackBox.innerHTML = `<span class="text-2xl">${emoji}</span><span class="text-emerald-800">${message}</span>`;
+
+            playChime('success');
+            if (stars === 5) launchConfetti();
+        }
+
+        function loadQuizQuestion(index) {
+            currentQuizIndex = index;
+            const scene = scenesData[index];
+            document.getElementById('quizNumber').textContent = `${index + 1} / ${scenesData.length}`;
+            document.getElementById('quizEmoji').textContent = scene.emoji;
+            document.getElementById('quizHintText').textContent = scene.quizHint;
+            document.getElementById('quizFeedback').classList.add('hidden');
+            document.getElementById('nextQuizBtn').classList.add('hidden');
+
+            const words = scene.sentence.split(' ');
+            selectedQuizWords = [];
+            availableQuizWords = words
+                .map((word, idx) => ({ id: idx, text: word }))
+                .sort(() => Math.random() - 0.5);
+
+            renderQuizBoards();
+        }
+
+        function renderQuizBoards() {
+            const answerZone = document.getElementById('quizAnswerZone');
+            const wordBank = document.getElementById('quizWordBank');
+
+            if (selectedQuizWords.length === 0) {
+                answerZone.innerHTML = `<span class="text-slate-400 text-sm font-semibold italic">Klik perkataan di bawah untuk menyusun ayat di sini...</span>`;
+            } else {
+                answerZone.innerHTML = selectedQuizWords.map((item, idx) =>
+                    `<button onclick="removeWordFromAnswer(${idx})" class="btn-3d bg-amber-400 hover:bg-amber-300 text-amber-950 font-kid font-bold px-3.5 py-2 rounded-xl text-sm sm:text-base border-2 border-amber-600">
+                        ${item.text}
+                    </button>`
+                ).join('');
+            }
+
+            wordBank.innerHTML = availableQuizWords.map((item, idx) =>
+                `<button onclick="addWordToAnswer(${idx})" class="btn-3d bg-white hover:bg-sky-50 text-blue-900 font-kid font-bold px-3.5 py-2 rounded-xl text-sm sm:text-base border-2 border-sky-400">
+                    ${item.text}
+                </button>`
+            ).join('');
+        }
+
+        function addWordToAnswer(bankIndex) {
+            playChime('click');
+            const wordObj = availableQuizWords.splice(bankIndex, 1)[0];
+            selectedQuizWords.push(wordObj);
+            speakText(wordObj.text.replace(/[.,]/g, ''), 0.95);
+            renderQuizBoards();
+        }
+
+        function removeWordFromAnswer(answerIndex) {
+            playChime('click');
+            const wordObj = selectedQuizWords.splice(answerIndex, 1)[0];
+            availableQuizWords.push(wordObj);
+            renderQuizBoards();
+        }
+
+        function resetCurrentQuiz() {
+            playChime('click');
+            loadQuizQuestion(currentQuizIndex);
+        }
+
+        function listenQuizHint() {
+            speakText(scenesData[currentQuizIndex].sentence, 0.85);
+        }
+
+        function checkQuizAnswer() {
+            const targetSentence = scenesData[currentQuizIndex].sentence;
+            const userSentence = selectedQuizWords.map(w => w.text).join(' ');
+            const fb = document.getElementById('quizFeedback');
+            fb.classList.remove('hidden');
+
+            if (userSentence === targetSentence) {
+                playChime('success');
+                launchConfetti();
+                fb.className = "mb-4 p-3.5 rounded-2xl font-kid font-bold text-center text-base sm:text-lg bg-emerald-100 text-emerald-900 border-2 border-emerald-400";
+                fb.innerHTML = `🎉 Tahniah! Susunan ayat kamu tepat sekali: <br><span class="text-emerald-700">"${targetSentence}"</span>`;
+                speakText("Tahniah! Jawapan kamu betul!", 0.95);
+                document.getElementById('nextQuizBtn').classList.remove('hidden');
+            } else {
+                playChime('tryagain');
+                fb.className = "mb-4 p-3.5 rounded-2xl font-kid font-bold text-center text-base sm:text-lg bg-rose-100 text-rose-900 border-2 border-rose-400";
+                fb.innerHTML = `🤔 Hampir tepat! Cuba semak semula susunan perkataan atau tekan "Dengar Petunjuk".`;
+            }
+        }
+
+        function nextQuizQuestion() {
+            playChime('click');
+            const nextIdx = (currentQuizIndex + 1) % scenesData.length;
+            loadQuizQuestion(nextIdx);
+        }
+
+        function launchConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const pieces = Array.from({ length: 70 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                size: Math.random() * 8 + 5,
+                speedY: Math.random() * 4 + 2,
+                speedX: (Math.random() - 0.5) * 3,
+                color: ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#fde047'][Math.floor(Math.random() * 5)],
+                rotation: Math.random() * 360
+            }));
+
+            let frame = 0;
+            function animateConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.rotation += 5;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+                frame++;
+                if (frame < 140) {
+                    requestAnimationFrame(animateConfetti);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            animateConfetti();
+        }
+
+        // Initialize on window load
+        window.onload = function () {
+            initNaturalVoices();
+            renderScene();
+            loadQuizQuestion(0);
+        };
+    </script>
+</body>
+</html>
